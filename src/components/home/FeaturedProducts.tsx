@@ -20,11 +20,6 @@ function ProductCard({ p }: { p: Product }) {
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
       <div className="overflow-hidden bg-gray-50">
-        {p.badge && (
-          <span className="absolute left-3 top-3 z-10 rounded-full bg-[#1a6b3c] px-2.5 py-0.5 text-[11px] font-bold text-white shadow">
-            {p.badge}
-          </span>
-        )}
         <img
           src={p.image}
           alt={p.name}
@@ -33,7 +28,14 @@ function ProductCard({ p }: { p: Product }) {
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-base font-bold text-gray-900">{p.name}</h3>
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="text-base font-bold text-gray-900">{p.name}</h3>
+          {p.badge && (
+            <span className="shrink-0 rounded-full bg-[#1a6b3c] px-2 py-0.5 text-[10px] font-bold text-white">
+              {p.badge}
+            </span>
+          )}
+        </div>
         <p className="mt-1.5 text-xl font-extrabold text-[#1a6b3c]">
           ${p.price.toFixed(2)}{" "}
           <span className="text-sm font-medium text-gray-400">/ {p.unit}</span>
