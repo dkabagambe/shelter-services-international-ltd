@@ -8,6 +8,13 @@ import avocado from "@/assets/p-avocado.jpg";
 import babyCorn from "@/assets/p-babycorn.jpg";
 import snowPeas from "@/assets/p-snowpeas.jpg";
 import mangoes from "@/assets/p-mangoes.jpg";
+import yellowBananas from "@/assets/p-yellow-bananas.jpg";
+import greenBananas from "@/assets/p-green-bananas.jpg";
+import pineapple from "@/assets/p-pineapple.jpg";
+import passionFruit from "@/assets/p-passion-fruit.jpg";
+import goatMeat from "@/assets/p-goat-meat.jpg";
+import sheepMeat from "@/assets/p-sheep-meat.jpg";
+import beef from "@/assets/p-beef.jpg";
 
 export type Product = {
   id: string;
@@ -18,11 +25,130 @@ export type Product = {
   tagline: string;
   minOrder: string;
   badge?: string;
+  category: "fruits" | "meat" | "vegetables";
   rating: number;
   reviews: number;
 };
 
 export const products: Product[] = [
+  // ── Fruits ──
+  {
+    id: "avocado",
+    name: "African Avocados",
+    image: avocado,
+    price: 2.4,
+    unit: "kg",
+    tagline: "Hass · Export Grade Class 1",
+    minOrder: "500 kg",
+    badge: "Best Seller",
+    category: "fruits",
+    rating: 4.9,
+    reviews: 214,
+  },
+  {
+    id: "yellow-bananas",
+    name: "Yellow Bananas",
+    image: yellowBananas,
+    price: 0.9,
+    unit: "kg",
+    tagline: "Sweet & Ripe · Cavendish",
+    minOrder: "1000 kg",
+    category: "fruits",
+    rating: 4.8,
+    reviews: 143,
+  },
+  {
+    id: "green-bananas",
+    name: "Green Bananas",
+    image: greenBananas,
+    price: 0.7,
+    unit: "kg",
+    tagline: "Raw · Long Shelf Life",
+    minOrder: "1000 kg",
+    category: "fruits",
+    rating: 4.7,
+    reviews: 98,
+  },
+  {
+    id: "mangoes",
+    name: "Kenyan Mangoes",
+    image: mangoes,
+    price: 2.7,
+    unit: "kg",
+    tagline: "Apple & Ngowe Varieties",
+    minOrder: "500 kg",
+    badge: "Seasonal",
+    category: "fruits",
+    rating: 5.0,
+    reviews: 189,
+  },
+  {
+    id: "pineapple",
+    name: "Pineapples",
+    image: pineapple,
+    price: 1.5,
+    unit: "kg",
+    tagline: "Sweet & Juicy · Export Grade",
+    minOrder: "500 kg",
+    category: "fruits",
+    rating: 4.8,
+    reviews: 112,
+  },
+  {
+    id: "passion-fruit",
+    name: "Passion Fruits",
+    image: passionFruit,
+    price: 3.2,
+    unit: "kg",
+    tagline: "Purple · Naturally Sweet",
+    minOrder: "300 kg",
+    category: "fruits",
+    rating: 4.9,
+    reviews: 88,
+  },
+
+  // ── Meat ──
+  {
+    id: "goat-meat",
+    name: "Goat Meat",
+    image: goatMeat,
+    price: 8.5,
+    unit: "kg",
+    tagline: "Fresh & Halal Certified",
+    minOrder: "200 kg",
+    badge: "Halal",
+    category: "meat",
+    rating: 4.9,
+    reviews: 74,
+  },
+  {
+    id: "sheep-meat",
+    name: "Sheep Meat",
+    image: sheepMeat,
+    price: 9.0,
+    unit: "kg",
+    tagline: "Tender & Premium Cut",
+    minOrder: "200 kg",
+    badge: "Halal",
+    category: "meat",
+    rating: 4.8,
+    reviews: 61,
+  },
+  {
+    id: "beef",
+    name: "Beef",
+    image: beef,
+    price: 7.5,
+    unit: "kg",
+    tagline: "Grass-Fed · Export Grade",
+    minOrder: "300 kg",
+    badge: "Halal",
+    category: "meat",
+    rating: 4.9,
+    reviews: 93,
+  },
+
+  // ── Vegetables (original, unchanged) ──
   {
     id: "french-beans",
     name: "French Beans",
@@ -31,6 +157,7 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Fresh & Crisp",
     minOrder: "1000 kg",
+    category: "vegetables",
     rating: 4.8,
     reviews: 168,
   },
@@ -42,6 +169,7 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Premium Quality",
     minOrder: "1000 kg",
+    category: "vegetables",
     rating: 4.9,
     reviews: 87,
   },
@@ -53,6 +181,7 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Fresh & Organic",
     minOrder: "1000 kg",
+    category: "vegetables",
     rating: 4.6,
     reviews: 58,
   },
@@ -64,6 +193,7 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Sweet & Crunchy",
     minOrder: "1000 kg",
+    category: "vegetables",
     rating: 4.8,
     reviews: 141,
   },
@@ -75,6 +205,7 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Premium Grade",
     minOrder: "500 kg",
+    category: "vegetables",
     rating: 4.7,
     reviews: 96,
   },
@@ -86,20 +217,9 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Fresh & Juicy",
     minOrder: "500 kg",
+    category: "vegetables",
     rating: 4.8,
     reviews: 132,
-  },
-  {
-    id: "avocado",
-    name: "Hass Avocados",
-    image: avocado,
-    price: 2.4,
-    unit: "kg",
-    tagline: "Export Grade · Class 1",
-    minOrder: "500 kg",
-    badge: "Best Seller",
-    rating: 4.9,
-    reviews: 214,
   },
   {
     id: "baby-corn",
@@ -109,6 +229,7 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Tender · Uniform Grade",
     minOrder: "300 kg",
+    category: "vegetables",
     rating: 4.7,
     reviews: 64,
   },
@@ -120,19 +241,8 @@ export const products: Product[] = [
     unit: "kg",
     tagline: "Flat Pod · Premium",
     minOrder: "300 kg",
+    category: "vegetables",
     rating: 4.8,
     reviews: 73,
-  },
-  {
-    id: "mangoes",
-    name: "Kenyan Mangoes",
-    image: mangoes,
-    price: 2.7,
-    unit: "kg",
-    tagline: "Apple & Ngowe Varieties",
-    minOrder: "500 kg",
-    badge: "Seasonal",
-    rating: 5.0,
-    reviews: 189,
   },
 ];
