@@ -1,13 +1,32 @@
 import { motion } from "framer-motion";
 import { Plane } from "lucide-react";
 
-const destinations = [
+const featured = [
   { name: "United Arab Emirates", short: "UAE", hub: "Dubai · Abu Dhabi", flag: "🇦🇪" },
   { name: "Saudi Arabia", short: "KSA", hub: "Riyadh · Jeddah", flag: "🇸🇦" },
   { name: "Qatar", short: "QAT", hub: "Doha", flag: "🇶🇦" },
   { name: "Oman", short: "OMN", hub: "Muscat", flag: "🇴🇲" },
   { name: "United Kingdom", short: "UK", hub: "London · Manchester", flag: "🇬🇧" },
   { name: "Netherlands", short: "NLD", hub: "Amsterdam", flag: "🇳🇱" },
+];
+
+const arabMarkets = [
+  { name: "Algeria", flag: "🇩🇿" },
+  { name: "Bahrain", flag: "🇧🇭" },
+  { name: "Comoros", flag: "🇰🇲" },
+  { name: "Djibouti", flag: "🇩🇯" },
+  { name: "Egypt", flag: "🇪🇬" },
+  { name: "Iraq", flag: "🇮🇶" },
+  { name: "Jordan", flag: "🇯🇴" },
+  { name: "Kuwait", flag: "🇰🇼" },
+  { name: "Lebanon", flag: "🇱🇧" },
+  { name: "Libya", flag: "🇱🇾" },
+  { name: "Mauritania", flag: "🇲🇷" },
+  { name: "Morocco", flag: "🇲🇦" },
+  { name: "Palestine", flag: "🇵🇸" },
+  { name: "Syria", flag: "🇸🇾" },
+  { name: "Tunisia", flag: "🇹🇳" },
+  { name: "Yemen", flag: "🇾🇪" },
 ];
 
 export function ExportDestinations() {
@@ -43,9 +62,9 @@ export function ExportDestinations() {
           </div>
         </div>
 
-        {/* Destination cards */}
+        {/* Featured destination cards */}
         <div className="mt-12 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
-          {destinations.map((d, i) => (
+          {featured.map((d, i) => (
             <motion.div
               key={d.short}
               initial={{ opacity: 0, y: 24 }}
@@ -62,8 +81,31 @@ export function ExportDestinations() {
           ))}
         </div>
 
+        {/* Arab League markets */}
+        <div className="mt-12">
+          <p className="mb-6 text-xs font-bold uppercase tracking-[0.16em] text-white/60">
+            Arab League Markets
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+            {arabMarkets.map((d, i) => (
+              <motion.div
+                key={d.name}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.35, delay: i * 0.04 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="flex flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/8 px-3 py-4 backdrop-blur-sm transition-all hover:border-white/25 hover:bg-white/15"
+              >
+                <span className="text-2xl">{d.flag}</span>
+                <p className="text-center text-xs font-semibold leading-tight">{d.name}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
         <p className="mt-8 text-center text-sm text-white/60">
-          + 14 more markets including Germany, France, Canada, Australia, Japan and more
+          + more markets including Germany, France, Canada, Australia, Japan and more
         </p>
       </div>
     </section>

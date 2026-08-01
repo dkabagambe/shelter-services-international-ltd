@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useProducts } from "@/context/use-products";
 import { useCart } from "@/context/cart";
-import { productGalleries, avocadoVarieties, idToGalleryKey } from "@/data/products";
+import { productGalleries, avocadoVarieties } from "@/data/products";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { SiteHeader } from "@/components/home/SiteHeader";
 import { SiteFooter } from "@/components/home/SiteFooter";
@@ -34,8 +34,7 @@ function ProductDetailPage() {
   const [added, setAdded] = useState(false);
 
   // Gallery — use extra images if available, else just the product image
-  const gallery: string[] =
-    productGalleries[idToGalleryKey(id)] ?? (product ? [product.image] : []);
+  const gallery: string[] = productGalleries[id] ?? (product ? [product.image] : []);
   const [activeIdx, setActiveIdx] = useState(0);
 
   function prevImg() {
