@@ -37,12 +37,23 @@ function Index() {
       <main>
         <Hero />
         <StatsBar />
-        <FeaturedProducts />
-        <WhyChooseUs />
-        <ExportDestinations />
-        <Certifications />
+        <div id="shop">
+          <FeaturedProducts />
+        </div>
+        <div id="about">
+          <WhyChooseUs />
+        </div>
+        <div id="farms">
+          <ExportDestinations />
+        </div>
+        <div id="certifications">
+          <Certifications />
+        </div>
         <Testimonials />
-        <Newsletter />
+        <div id="contact">
+          <Newsletter />
+        </div>
+        <div id="exports" />
       </main>
       <SiteFooter />
     </div>

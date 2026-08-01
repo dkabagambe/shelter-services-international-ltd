@@ -21,11 +21,11 @@ export function AnnouncementBar() {
             Nairobi, Kenya
           </span>
           <a
-            href="tel:+254701903029"
+            href="tel:+254703372539"
             className="flex items-center gap-1.5 px-3 font-semibold text-white transition-colors hover:text-white/80"
           >
             <Phone className="size-3 shrink-0" />
-            +254 701 903 029
+            +254 703 372 539
           </a>
           <a
             href="mailto:info@shelterservices.co.ke"

@@ -16,6 +16,7 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { AuthProvider } from "@/context/auth";
 import { ProductsProvider } from "@/context/products";
 import { OrdersProvider } from "@/context/orders";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 function NotFoundComponent() {
   return (
@@ -132,6 +133,7 @@ function RootComponent() {
             <CartProvider>
               <Outlet />
               <CartDrawer />
+              <WhatsAppButton />
             </CartProvider>
           </OrdersProvider>
         </ProductsProvider>

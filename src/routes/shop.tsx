@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { ShoppingCart, Search, SlidersHorizontal, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProducts, type Product } from "@/context/products";
@@ -9,7 +9,22 @@ import { SiteHeader } from "@/components/home/SiteHeader";
 import { SiteFooter } from "@/components/home/SiteFooter";
 import { Link } from "@tanstack/react-router";
 
+// Validate category value against known ones
+type CategoryFilter = "all" | "fruits" | "vegetables" | "meat";
+const VALID_CATEGORIES: CategoryFilter[] = ["all", "fruits", "vegetables", "meat"];
+
+function toCategory(raw: unknown): CategoryFilter {
+  if (typeof raw === "string" && VALID_CATEGORIES.includes(raw as CategoryFilter)) {
+    return raw as CategoryFilter;
+  }
+  return "all";
+}
+
 export const Route = createFileRoute("/shop")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    category: toCategory(search.category),
+    q: typeof search.q === "string" ? search.q : "",
+  }),
   head: () => ({
     meta: [
       { title: "Shop | Shelter Services International" },
@@ -19,15 +34,14 @@ export const Route = createFileRoute("/shop")({
   component: ShopPage,
 });
 
-const categoryFilters = [
-  { label: "All", value: "all" },
-  { label: "Fruits", value: "fruits" },
+const categoryFilters: { label: string; value: CategoryFilter }[] = [
+  { label: "All",        value: "all" },
+  { label: "Fruits",     value: "fruits" },
   { label: "Vegetables", value: "vegetables" },
-  { label: "Meat", value: "meat" },
-] as const;
+  { label: "Meat",       value: "meat" },
+];
 
-type CategoryFilter = (typeof categoryFilters)[number]["value"];
-
+// ─── Product Card ─────────────────────────────────────────────────────────────
 function ProductCard({ p }: { p: Product }) {
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
@@ -45,7 +59,7 @@ function ProductCard({ p }: { p: Product }) {
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-2">
           <Link to="/products/$id" params={{ id: p.id }}>
-            <h3 className="text-base font-bold text-gray-900 hover:text-[#1a6b3c] transition-colors">{p.name}</h3>
+            <h3 className="text-base font-bold text-gray-900 transition-colors hover:text-[#1a6b3c]">{p.name}</h3>
           </Link>
           {p.badge && (
             <span className="shrink-0 rounded-full bg-[#1a6b3c] px-2 py-0.5 text-[10px] font-bold text-white">
@@ -84,17 +98,33 @@ function ProductCard({ p }: { p: Product }) {
   );
 }
 
+// ─── Shop Page ────────────────────────────────────────────────────────────────
 function ShopPage() {
   const { products, loading } = useProducts();
-  const [category, setCategory] = useState<CategoryFilter>("all");
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState<"name" | "price-asc" | "price-desc">("name");
+  const navigate = useNavigate();
+
+  // Read initial values from URL search params
+  const { category: urlCategory, q: urlQ } = Route.useSearch();
+
+  const [category, setCategory] = useState<CategoryFilter>(urlCategory);
+  const [search, setSearch]     = useState(urlQ);
+  const [sortBy, setSortBy]     = useState<"name" | "price-asc" | "price-desc">("name");
+
+  // Sync URL → state when navigating here from a category card
+  useEffect(() => { setCategory(urlCategory); }, [urlCategory]);
+  useEffect(() => { setSearch(urlQ); },         [urlQ]);
+
+  // Update URL when filters change (so links are shareable)
+  function changeCategory(val: CategoryFilter) {
+    setCategory(val);
+    navigate({ to: "/shop", search: { category: val, q: search } });
+  }
 
   const filtered = products
     .filter((p) => category === "all" || p.category === category)
     .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
-      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-asc")  return a.price - b.price;
       if (sortBy === "price-desc") return b.price - a.price;
       return a.name.localeCompare(b.name);
     });
@@ -104,7 +134,6 @@ function ShopPage() {
       <AnnouncementBar />
       <SiteHeader />
       <main className="shell py-10">
-        {/* Page title */}
         <div className="mb-8">
           <h1 className="text-3xl font-extrabold text-gray-900">Shop All Products</h1>
           <p className="mt-1 text-sm text-gray-500">
@@ -131,7 +160,7 @@ function ShopPage() {
             {categoryFilters.map((c) => (
               <button
                 key={c.value}
-                onClick={() => setCategory(c.value)}
+                onClick={() => changeCategory(c.value)}
                 className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
                   category === c.value
                     ? "bg-[#1a6b3c] text-white shadow-sm"
@@ -161,6 +190,9 @@ function ShopPage() {
         {/* Result count */}
         <p className="mb-6 text-sm text-gray-500">
           Showing <span className="font-semibold text-gray-800">{filtered.length}</span> products
+          {category !== "all" && (
+            <span className="ml-1 text-gray-400">in <span className="font-semibold capitalize text-gray-600">{category}</span></span>
+          )}
         </p>
 
         {/* Grid */}
@@ -171,7 +203,7 @@ function ShopPage() {
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-4 py-20 text-center">
             <p className="text-base font-semibold text-gray-500">No products match your search.</p>
-            <Button variant="outline" onClick={() => { setSearch(""); setCategory("all"); }}>
+            <Button variant="outline" onClick={() => { setSearch(""); changeCategory("all"); }}>
               Clear filters
             </Button>
           </div>
