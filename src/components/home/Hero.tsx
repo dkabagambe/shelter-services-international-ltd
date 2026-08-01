@@ -1,5 +1,6 @@
 import { ShoppingCart, FileText, CheckCircle, ShieldCheck, Truck, Snowflake } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 import produceImage from "@/assets/hero-produce-removebg-preview.png";
 import nairobiImage from "@/assets/nairobi.jpg";
 
@@ -47,12 +48,16 @@ export function Hero() {
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Button size="lg" className="gap-2 bg-[#1a6b3c] px-6 text-white shadow-md hover:bg-[#145530]">
-              <ShoppingCart className="size-4" /> Order Now
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2 border-white/70 bg-white/10 px-6 text-white backdrop-blur-sm hover:bg-white/20">
-              <FileText className="size-4" /> Request a Quote
-            </Button>
+            <Link to="/shop">
+              <Button size="lg" className="gap-2 bg-[#1a6b3c] px-6 text-white shadow-md hover:bg-[#145530]">
+                <ShoppingCart className="size-4" /> Order Now
+              </Button>
+            </Link>
+            <Link to="/checkout">
+              <Button size="lg" variant="outline" className="gap-2 border-white/70 bg-white/10 px-6 text-white backdrop-blur-sm hover:bg-white/20">
+                <FileText className="size-4" /> Request a Quote
+              </Button>
+            </Link>
           </div>
 
           {/* 2-col badges */}
@@ -130,12 +135,16 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button size="lg" className="gap-2 bg-[#1a6b3c] px-7 text-white shadow-md hover:bg-[#145530]">
-              <ShoppingCart className="size-4" /> Order Now
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2 border-gray-500 bg-white/80 px-7 text-gray-700 hover:border-[#1a6b3c] hover:text-[#1a6b3c]">
-              <FileText className="size-4" /> Request a Quote
-            </Button>
+            <Link to="/shop">
+              <Button size="lg" className="gap-2 bg-[#1a6b3c] px-7 text-white shadow-md hover:bg-[#145530]">
+                <ShoppingCart className="size-4" /> Order Now
+              </Button>
+            </Link>
+            <Link to="/checkout">
+              <Button size="lg" variant="outline" className="gap-2 border-gray-500 bg-white/80 px-7 text-gray-700 hover:border-[#1a6b3c] hover:text-[#1a6b3c]">
+                <FileText className="size-4" /> Request a Quote
+              </Button>
+            </Link>
           </div>
 
           <div className="mt-10 grid grid-cols-4 gap-x-6 gap-y-4">
