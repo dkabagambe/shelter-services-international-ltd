@@ -61,7 +61,7 @@ function CheckoutPage() {
       return;
     }
 
-    // 2. Send email receipts — customer + admin
+    // 2. Send email receipts - customer + admin
     await sendOrderEmails({
       orderId: oid,
       customerName: form.name,

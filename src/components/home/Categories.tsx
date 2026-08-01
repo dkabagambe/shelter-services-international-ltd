@@ -30,7 +30,7 @@ export function Categories() {
             Sourced across the Kenyan highlands
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            From smallholder farms to your warehouse — certified and export-ready.
+            From smallholder farms to your warehouse - certified and export-ready.
           </p>
         </div>
         <Link

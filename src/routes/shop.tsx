@@ -137,7 +137,7 @@ function ShopPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-extrabold text-gray-900">Shop All Products</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Premium Kenyan produce — export-ready, certified quality.
+            Premium Kenyan produce - export-ready, certified quality.
           </p>
         </div>
 

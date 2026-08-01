@@ -14,7 +14,7 @@ const stats = [
   {
     icon: Award,
     title: "International Certifications",
-    sub: "Global GAP, HACCP, ISO — Fresh & Safe",
+    sub: "Global GAP, HACCP, ISO - Fresh & Safe",
   },
   {
     icon: Truck,

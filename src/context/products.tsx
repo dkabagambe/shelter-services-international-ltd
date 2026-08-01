@@ -75,12 +75,12 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       .order("name");
     setLoading(false);
     if (error || !data) {
-      // Supabase not configured yet — use seed data
+      // Supabase not configured yet - use seed data
       setUseSupabase(false);
       return;
     }
     if (data.length === 0) {
-      // DB empty on first run — show seed data
+      // DB empty on first run - show seed data
       setProducts(SEED);
     } else {
       setProducts(data as Product[]);

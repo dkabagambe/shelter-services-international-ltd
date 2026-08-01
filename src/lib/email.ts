@@ -52,7 +52,7 @@ function buildItemsText(items: CartItem[]): string {
   return items
     .map(
       (i) =>
-        `• ${i.product.name} — ${i.quantity} kg @ $${i.product.price.toFixed(2)}/kg = $${(i.product.price * i.quantity).toFixed(2)}`
+        `• ${i.product.name} - ${i.quantity} kg @ $${i.product.price.toFixed(2)}/kg = $${(i.product.price * i.quantity).toFixed(2)}`
     )
     .join("\n");
 }
@@ -71,9 +71,9 @@ async function sendEmail(toEmail: string, toName: string, data: OrderEmailData) 
     customer_name:   data.customerName,
     customer_email:  data.customerEmail,
     customer_phone:  data.customerPhone,
-    customer_company: data.customerCompany ?? "—",
+    customer_company: data.customerCompany ?? "-",
     country:         data.country,
-    city:            data.city ?? "—",
+    city:            data.city ?? "-",
     notes:           data.notes || "None",
   };
 
@@ -98,7 +98,7 @@ export async function sendOrderEmails(data: OrderEmailData): Promise<void> {
     await sendEmail(data.customerEmail, data.customerName, data);
 
     // Send copy to admin
-    await sendEmail(ADMIN_EMAIL, "Admin — Shelter Services", data);
+    await sendEmail(ADMIN_EMAIL, "Admin - Shelter Services", data);
   } catch (err) {
     console.error("EmailJS error:", err);
   }

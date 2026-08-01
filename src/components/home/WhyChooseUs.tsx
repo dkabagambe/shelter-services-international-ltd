@@ -56,7 +56,7 @@ export function WhyChooseUs() {
             A supply partner built for serious importers
           </h2>
           <p className="mt-3 text-base leading-relaxed text-gray-500">
-            We go beyond produce — we provide end-to-end export support that keeps your supply chain reliable.
+            We go beyond produce - we provide end-to-end export support that keeps your supply chain reliable.
           </p>
         </div>
 

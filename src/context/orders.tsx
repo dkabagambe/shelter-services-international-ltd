@@ -56,7 +56,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
         .select("id")
         .single();
       if (error) {
-        // Supabase not set up — store locally
+        // Supabase not set up - store locally
         const local: Order = {
           ...row,
           id: crypto.randomUUID(),

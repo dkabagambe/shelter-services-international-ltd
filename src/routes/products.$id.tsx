@@ -36,7 +36,7 @@ function ProductDetailPage() {
     );
   }
 
-  // Related products — same category, exclude self
+  // Related products - same category, exclude self
   const related = products
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
@@ -120,10 +120,10 @@ function ProductDetailPage() {
             {/* Features */}
             <ul className="mt-6 space-y-2">
               {[
-                { icon: CheckCircle, text: "Export Grade — Class 1 quality" },
+                { icon: CheckCircle, text: "Export Grade - Class 1 quality" },
                 { icon: ShieldCheck, text: "Global GAP & HACCP certified handling" },
                 { icon: Snowflake, text: "Cold chain maintained from farm to port" },
-                { icon: Truck, text: "Air freight from JKIA — 24–48h delivery" },
+                { icon: Truck, text: "Air freight from JKIA - 24–48h delivery" },
               ].map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-center gap-2.5 text-sm text-gray-600">
                   <Icon className="size-4 shrink-0 text-[#1a6b3c]" />

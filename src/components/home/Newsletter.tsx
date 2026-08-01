@@ -30,7 +30,7 @@ export function Newsletter() {
             to_email: "danielkabagambe@gmail.com",
             to_name: "Admin",
             subscriber_email: email,
-            subscriber_company: company || "—",
+            subscriber_company: company || "-",
             order_id: "Newsletter Subscription",
             order_date: new Date().toLocaleDateString("en-GB"),
             items_html: `New newsletter subscriber: ${email} (${company || "no company"})`,
@@ -39,7 +39,7 @@ export function Newsletter() {
             customer_name: email,
             customer_email: email,
             customer_phone: "N/A",
-            customer_company: company || "—",
+            customer_company: company || "-",
             country: "N/A",
             city: "N/A",
             notes: "Newsletter subscription",
@@ -47,7 +47,7 @@ export function Newsletter() {
           PUBLIC_KEY
         );
       } catch {
-        // Still show success to user — subscription noted
+        // Still show success to user - subscription noted
       }
     }
 
