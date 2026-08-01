@@ -19,9 +19,10 @@ import sheep2 from "@/assets/sheep2.jpeg";
 import sheep3 from "@/assets/sheep3.jpeg";
 import sheep4 from "@/assets/sheep4.jpeg";
 import sheep5 from "@/assets/sheep5.jpeg";
+import sheep6 from "@/assets/sheep6.jpeg";
 import beef from "@/assets/p-beef.jpg";
 
-export const sheepGallery: string[] = [sheepMeat, sheep1, sheep2, sheep3, sheep4, sheep5];
+export const sheepGallery: string[] = [sheepMeat, sheep1, sheep2, sheep3, sheep4, sheep5, sheep6];
 
 /** Extra image galleries keyed by product id */
 export const productGalleries: Record<string, string[]> = {
