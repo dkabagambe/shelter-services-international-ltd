@@ -1,9 +1,10 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ShoppingCart, Plus, Minus, ArrowLeft, Star, CheckCircle, Truck, Snowflake, ShieldCheck } from "lucide-react";
+import { ShoppingCart, Plus, Minus, ArrowLeft, Star, CheckCircle, Truck, Snowflake, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProducts } from "@/context/products";
 import { useCart } from "@/context/cart";
+import { productGalleries } from "@/data/products";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { SiteHeader } from "@/components/home/SiteHeader";
 import { SiteFooter } from "@/components/home/SiteFooter";
@@ -19,6 +20,13 @@ function ProductDetailPage() {
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+
+  // Gallery — use extra images if available, else just the product image
+  const gallery: string[] = productGalleries[id] ?? (product ? [product.image] : []);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  function prevImg() { setActiveIdx((i) => (i === 0 ? gallery.length - 1 : i - 1)); }
+  function nextImg() { setActiveIdx((i) => (i === gallery.length - 1 ? 0 : i + 1)); }
 
   if (!product) {
     return (
@@ -63,13 +71,77 @@ function ProductDetailPage() {
 
         {/* Product layout */}
         <div className="grid gap-10 lg:grid-cols-2">
-          {/* Image */}
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="aspect-[4/3] w-full object-cover"
-            />
+          {/* Gallery */}
+          <div className="flex flex-col gap-3">
+            {/* Main image */}
+            <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
+              <img
+                key={activeIdx}
+                src={gallery[activeIdx]}
+                alt={`${product.name} - image ${activeIdx + 1}`}
+                className="aspect-[4/3] w-full object-cover transition-opacity duration-200"
+              />
+
+              {/* Prev / Next arrows — only show when more than 1 image */}
+              {gallery.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImg}
+                    aria-label="Previous image"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 grid size-9 place-items-center rounded-full bg-white/90 shadow-md transition-colors hover:bg-white"
+                  >
+                    <ChevronLeft className="size-5 text-gray-700" />
+                  </button>
+                  <button
+                    onClick={nextImg}
+                    aria-label="Next image"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 grid size-9 place-items-center rounded-full bg-white/90 shadow-md transition-colors hover:bg-white"
+                  >
+                    <ChevronRight className="size-5 text-gray-700" />
+                  </button>
+
+                  {/* Dot indicators */}
+                  <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
+                    {gallery.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveIdx(i)}
+                        aria-label={`View image ${i + 1}`}
+                        className={`rounded-full transition-all ${
+                          i === activeIdx
+                            ? "h-2 w-5 bg-[#1a6b3c]"
+                            : "size-2 bg-white/70 hover:bg-white"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Thumbnail strip — only when more than 1 image */}
+            {gallery.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {gallery.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveIdx(i)}
+                    aria-label={`Thumbnail ${i + 1}`}
+                    className={`shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
+                      i === activeIdx
+                        ? "border-[#1a6b3c] shadow-sm"
+                        : "border-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`${product.name} thumbnail ${i + 1}`}
+                      className="h-16 w-20 object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Info */}
