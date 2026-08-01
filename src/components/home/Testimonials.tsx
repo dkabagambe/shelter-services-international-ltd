@@ -73,7 +73,9 @@ export function Testimonials() {
                 </span>
                 <div>
                   <p className="text-sm font-bold text-gray-900">{t.name}</p>
-                  <p className="text-xs text-gray-500">{t.role}, {t.company}</p>
+                  <p className="text-xs text-gray-500">
+                    {t.role}, {t.company}
+                  </p>
                   <p className="text-xs font-semibold text-[#1a6b3c]">{t.city}</p>
                 </div>
               </figcaption>

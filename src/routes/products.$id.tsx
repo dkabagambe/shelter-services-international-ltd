@@ -1,10 +1,22 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ShoppingCart, Plus, Minus, ArrowLeft, Star, CheckCircle, Truck, Snowflake, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ShoppingCart,
+  Plus,
+  Minus,
+  ArrowLeft,
+  Star,
+  CheckCircle,
+  Truck,
+  Snowflake,
+  ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useProducts } from "@/context/products";
+import { useProducts } from "@/context/use-products";
 import { useCart } from "@/context/cart";
-import { productGalleries } from "@/data/products";
+import { productGalleries, avocadoVarieties, idToGalleryKey } from "@/data/products";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { SiteHeader } from "@/components/home/SiteHeader";
 import { SiteFooter } from "@/components/home/SiteFooter";
@@ -22,11 +34,16 @@ function ProductDetailPage() {
   const [added, setAdded] = useState(false);
 
   // Gallery — use extra images if available, else just the product image
-  const gallery: string[] = productGalleries[id] ?? (product ? [product.image] : []);
+  const gallery: string[] =
+    productGalleries[idToGalleryKey(id)] ?? (product ? [product.image] : []);
   const [activeIdx, setActiveIdx] = useState(0);
 
-  function prevImg() { setActiveIdx((i) => (i === 0 ? gallery.length - 1 : i - 1)); }
-  function nextImg() { setActiveIdx((i) => (i === gallery.length - 1 ? 0 : i + 1)); }
+  function prevImg() {
+    setActiveIdx((i) => (i === 0 ? gallery.length - 1 : i - 1));
+  }
+  function nextImg() {
+    setActiveIdx((i) => (i === gallery.length - 1 ? 0 : i + 1));
+  }
 
   if (!product) {
     return (
@@ -35,7 +52,11 @@ function ProductDetailPage() {
         <SiteHeader />
         <main className="shell py-20 text-center">
           <p className="text-lg font-semibold text-gray-500">Product not found.</p>
-          <Link to="/shop" className="mt-4 inline-block text-sm font-semibold text-[#1a6b3c] hover:underline">
+          <Link
+            to="/shop"
+            search={{ category: undefined, q: "" }}
+            className="mt-4 inline-block text-sm font-semibold text-[#1a6b3c] hover:underline"
+          >
             ← Back to Shop
           </Link>
         </main>
@@ -50,7 +71,8 @@ function ProductDetailPage() {
     .slice(0, 4);
 
   function handleAddToCart() {
-    addItem({ ...product, minOrder: product.min_order } as any, qty);
+    if (!product) return;
+    addItem(product, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   }
@@ -62,9 +84,17 @@ function ProductDetailPage() {
       <main className="shell py-10">
         {/* Breadcrumb */}
         <nav className="mb-8 flex items-center gap-2 text-sm text-gray-500">
-          <Link to="/" className="hover:text-[#1a6b3c] transition-colors">Home</Link>
+          <Link to="/" className="hover:text-[#1a6b3c] transition-colors">
+            Home
+          </Link>
           <span>/</span>
-          <Link to="/shop" className="hover:text-[#1a6b3c] transition-colors">Shop</Link>
+          <Link
+            to="/shop"
+            search={{ category: undefined, q: "" }}
+            className="hover:text-[#1a6b3c] transition-colors"
+          >
+            Shop
+          </Link>
           <span>/</span>
           <span className="font-semibold text-gray-800">{product.name}</span>
         </nav>
@@ -171,7 +201,9 @@ function ProductDetailPage() {
                   />
                 ))}
               </div>
-              <span className="text-sm font-semibold text-gray-700">{product.rating.toFixed(1)}</span>
+              <span className="text-sm font-semibold text-gray-700">
+                {product.rating.toFixed(1)}
+              </span>
               <span className="text-sm text-gray-400">({product.reviews} reviews)</span>
             </div>
 
@@ -182,7 +214,8 @@ function ProductDetailPage() {
                 <span className="ml-1 text-base font-medium text-gray-400">/ {product.unit}</span>
               </p>
               <p className="mt-1 text-sm text-gray-500">
-                Minimum order: <span className="font-semibold text-gray-700">{product.min_order}</span>
+                Minimum order:{" "}
+                <span className="font-semibold text-gray-700">{product.min_order}</span>
               </p>
               {!product.in_stock && (
                 <p className="mt-2 text-sm font-bold text-red-500">Currently out of stock</p>
@@ -207,11 +240,21 @@ function ProductDetailPage() {
             {/* Qty + Add to cart */}
             <div className="mt-8 flex items-center gap-3">
               <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3">
-                <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="text-gray-600 hover:text-[#1a6b3c]" aria-label="Decrease">
+                <button
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  className="text-gray-600 hover:text-[#1a6b3c]"
+                  aria-label="Decrease"
+                >
                   <Minus className="size-4" />
                 </button>
-                <span className="min-w-[60px] text-center text-base font-bold text-gray-900">{qty} kg</span>
-                <button onClick={() => setQty((q) => q + 1)} className="text-gray-600 hover:text-[#1a6b3c]" aria-label="Increase">
+                <span className="min-w-[60px] text-center text-base font-bold text-gray-900">
+                  {qty} kg
+                </span>
+                <button
+                  onClick={() => setQty((q) => q + 1)}
+                  className="text-gray-600 hover:text-[#1a6b3c]"
+                  aria-label="Increase"
+                >
                   <Plus className="size-4" />
                 </button>
               </div>
@@ -224,26 +267,82 @@ function ProductDetailPage() {
                 } text-white disabled:opacity-50`}
               >
                 {added ? (
-                  <><CheckCircle className="size-4" /> Added!</>
+                  <>
+                    <CheckCircle className="size-4" /> Added!
+                  </>
                 ) : (
-                  <><ShoppingCart className="size-4" /> Add to Cart</>
+                  <>
+                    <ShoppingCart className="size-4" /> Add to Cart
+                  </>
                 )}
               </Button>
             </div>
 
             <p className="mt-3 text-sm text-gray-400">
-              Subtotal: <span className="font-bold text-gray-700">${(product.price * qty).toFixed(2)}</span>
+              Subtotal:{" "}
+              <span className="font-bold text-gray-700">${(product.price * qty).toFixed(2)}</span>
             </p>
 
             <div className="mt-4 flex gap-3">
               <Link to="/checkout" className="flex-1">
-                <Button variant="outline" className="w-full border-[#1a6b3c] text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white">
+                <Button
+                  variant="outline"
+                  className="w-full border-[#1a6b3c] text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white"
+                >
                   Request a Quote
                 </Button>
               </Link>
             </div>
           </div>
         </div>
+
+        {/* Avocado varieties - only on the avocado product */}
+        {id === "avocado" && (
+          <div className="mt-16">
+            <div className="mb-8">
+              <span className="eyebrow">Available Varieties</span>
+              <h2 className="mt-2 text-2xl font-extrabold text-gray-900">
+                3 Varieties of Kenyan Avocado
+              </h2>
+              <p className="mt-1 text-sm text-gray-500">
+                All varieties are export-grade Class 1, cold-chain handled and available for bulk
+                order.
+              </p>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-3">
+              {avocadoVarieties.map((v) => (
+                <div
+                  key={v.name}
+                  className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md"
+                >
+                  <div className="overflow-hidden bg-gray-50">
+                    <img
+                      src={v.image}
+                      alt={v.name}
+                      className="aspect-[4/3] w-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-base font-bold text-gray-900">{v.name}</h3>
+                    <span className="mt-1 inline-block rounded-full bg-[#1a6b3c]/10 px-2.5 py-0.5 text-[11px] font-semibold text-[#1a6b3c]">
+                      Season: {v.season}
+                    </span>
+                    <p className="mt-3 text-sm leading-relaxed text-gray-500">{v.description}</p>
+                    <Link to="/checkout" className="mt-4 block">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-[#1a6b3c] text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white"
+                      >
+                        Request This Variety
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Related products */}
         {related.length > 0 && (
@@ -263,9 +362,12 @@ function ProductDetailPage() {
                     className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="p-4">
-                    <p className="text-sm font-bold text-gray-900 group-hover:text-[#1a6b3c] transition-colors">{p.name}</p>
+                    <p className="text-sm font-bold text-gray-900 group-hover:text-[#1a6b3c] transition-colors">
+                      {p.name}
+                    </p>
                     <p className="mt-1 text-base font-extrabold text-[#1a6b3c]">
-                      ${p.price.toFixed(2)} <span className="text-xs font-normal text-gray-400">/{p.unit}</span>
+                      ${p.price.toFixed(2)}{" "}
+                      <span className="text-xs font-normal text-gray-400">/{p.unit}</span>
                     </p>
                   </div>
                 </Link>
@@ -275,7 +377,11 @@ function ProductDetailPage() {
         )}
 
         <div className="mt-10">
-          <Link to="/shop" className="inline-flex items-center gap-2 text-sm font-semibold text-[#1a6b3c] hover:underline">
+          <Link
+            to="/shop"
+            search={{ category: undefined, q: "" }}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#1a6b3c] hover:underline"
+          >
             <ArrowLeft className="size-4" /> Back to Shop
           </Link>
         </div>

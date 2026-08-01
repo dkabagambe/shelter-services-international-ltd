@@ -4,17 +4,18 @@ import { Mail, Phone, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import emailjs from "@emailjs/browser";
 
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  as string;
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  as string;
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 // Use a separate newsletter template ID, or fall back to the order one
-const TEMPLATE_ID = (import.meta.env.VITE_EMAILJS_NEWSLETTER_TEMPLATE_ID ?? import.meta.env.VITE_EMAILJS_TEMPLATE_ID) as string;
+const TEMPLATE_ID = (import.meta.env.VITE_EMAILJS_NEWSLETTER_TEMPLATE_ID ??
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID) as string;
 
 export function Newsletter() {
-  const [email, setEmail]       = useState("");
-  const [company, setCompany]   = useState("");
-  const [loading, setLoading]   = useState(false);
-  const [done, setDone]         = useState(false);
-  const [error, setError]       = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -44,7 +45,7 @@ export function Newsletter() {
             city: "N/A",
             notes: "Newsletter subscription",
           },
-          PUBLIC_KEY
+          PUBLIC_KEY,
         );
       } catch {
         // Still show success to user - subscription noted

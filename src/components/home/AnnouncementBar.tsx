@@ -13,7 +13,6 @@ export function AnnouncementBar() {
   return (
     <div className="bg-[#1a4731] text-white">
       <div className="shell flex h-9 items-center justify-between overflow-hidden text-xs">
-
         {/* LEFT: location · phone · email */}
         <div className="flex shrink-0 items-center divide-x divide-white/20">
           <span className="flex items-center gap-1.5 pr-3 text-white/90">
@@ -57,7 +56,6 @@ export function AnnouncementBar() {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );

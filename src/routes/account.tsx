@@ -63,7 +63,10 @@ function AccountPage() {
           <Button
             variant="outline"
             className="gap-2 text-gray-600"
-            onClick={async () => { await signOut(); navigate({ to: "/" }); }}
+            onClick={async () => {
+              await signOut();
+              navigate({ to: "/" });
+            }}
           >
             <LogOut className="size-4" /> Sign Out
           </Button>
@@ -77,14 +80,19 @@ function AccountPage() {
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-gray-50 py-16 text-center">
             <Package className="size-12 text-gray-300" />
             <p className="text-sm font-semibold text-gray-500">No orders yet.</p>
-            <Link to="/shop">
-              <Button className="bg-[#1a6b3c] text-white hover:bg-[#145530]">Browse Products</Button>
+            <Link to="/shop" search={{ category: undefined, q: "" }}>
+              <Button className="bg-[#1a6b3c] text-white hover:bg-[#145530]">
+                Browse Products
+              </Button>
             </Link>
           </div>
         ) : (
           <div className="space-y-4">
             {myOrders.map((order) => (
-              <div key={order.id} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <div
+                key={order.id}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+              >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-sm font-bold text-gray-900">
@@ -92,11 +100,15 @@ function AccountPage() {
                     </p>
                     <p className="text-xs text-gray-400">
                       {new Date(order.created_at).toLocaleDateString("en-GB", {
-                        day: "numeric", month: "short", year: "numeric",
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
                       })}
                     </p>
                   </div>
-                  <span className={`rounded-full px-3 py-1 text-xs font-bold capitalize ${STATUS_COLORS[order.status] ?? "bg-gray-100 text-gray-600"}`}>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-bold capitalize ${STATUS_COLORS[order.status] ?? "bg-gray-100 text-gray-600"}`}
+                  >
                     {order.status}
                   </span>
                 </div>

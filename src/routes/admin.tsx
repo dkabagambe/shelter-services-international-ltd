@@ -1,12 +1,23 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  LayoutDashboard, Package, ShoppingBag, Plus, Pencil, Trash2,
-  X, Upload, CheckCircle, AlertCircle, LogOut, ChevronDown,
+  LayoutDashboard,
+  Package,
+  ShoppingBag,
+  Plus,
+  Pencil,
+  Trash2,
+  X,
+  Upload,
+  CheckCircle,
+  AlertCircle,
+  LogOut,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth";
-import { useProducts, type Product } from "@/context/products";
+import { useProducts } from "@/context/use-products";
+import type { Product } from "@/context/products";
 import { useOrders, type OrderStatus } from "@/context/orders";
 
 export const Route = createFileRoute("/admin")({
@@ -18,9 +29,17 @@ export const Route = createFileRoute("/admin")({
 type ProductFormData = Omit<Product, "id">;
 
 const EMPTY_FORM: ProductFormData = {
-  name: "", image: "", price: 0, unit: "kg",
-  tagline: "", min_order: "", badge: "",
-  category: "vegetables", rating: 4.8, reviews: 0, in_stock: true,
+  name: "",
+  image: "",
+  price: 0,
+  unit: "kg",
+  tagline: "",
+  min_order: "",
+  badge: "",
+  category: "vegetables",
+  rating: 4.8,
+  reviews: 0,
+  in_stock: true,
 };
 
 function ProductModal({
@@ -34,9 +53,7 @@ function ProductModal({
   onSave: (data: ProductFormData, id?: string) => Promise<void>;
   uploadImage: (f: File) => Promise<{ url: string | null; error: string | null }>;
 }) {
-  const [form, setForm] = useState<ProductFormData>(
-    initial ? { ...initial } : EMPTY_FORM
-  );
+  const [form, setForm] = useState<ProductFormData>(initial ? { ...initial } : EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [imgLoading, setImgLoading] = useState(false);
   const [error, setError] = useState("");
@@ -51,7 +68,10 @@ function ProductModal({
     setImgLoading(true);
     const { url, error } = await uploadImage(file);
     setImgLoading(false);
-    if (error || !url) { setError("Image upload failed: " + error); return; }
+    if (error || !url) {
+      setError("Image upload failed: " + error);
+      return;
+    }
     set("image", url);
   }
 
@@ -68,7 +88,10 @@ function ProductModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      onClick={onClose}
+    >
       <div
         className="w-full max-w-xl overflow-y-auto rounded-2xl bg-white p-7 shadow-2xl max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
@@ -77,7 +100,9 @@ function ProductModal({
           <h2 className="text-xl font-extrabold text-gray-900">
             {initial ? "Edit Product" : "Add New Product"}
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700"><X className="size-5" /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-700">
+            <X className="size-5" />
+          </button>
         </div>
 
         {error && (
@@ -90,29 +115,45 @@ function ProductModal({
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5 sm:col-span-2">
               <label className="text-sm font-semibold text-gray-700">Product Name *</label>
-              <input value={form.name} onChange={(e) => set("name", e.target.value)} required
+              <input
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+                required
                 className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
-                placeholder="e.g. French Beans" />
+                placeholder="e.g. French Beans"
+              />
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-gray-700">Price (USD) *</label>
-              <input type="number" min="0" step="0.01" value={form.price}
-                onChange={(e) => set("price", parseFloat(e.target.value))} required
-                className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]" />
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={form.price}
+                onChange={(e) => set("price", parseFloat(e.target.value))}
+                required
+                className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
+              />
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-gray-700">Unit</label>
-              <input value={form.unit} onChange={(e) => set("unit", e.target.value)}
+              <input
+                value={form.unit}
+                onChange={(e) => set("unit", e.target.value)}
                 className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
-                placeholder="kg" />
+                placeholder="kg"
+              />
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-gray-700">Category *</label>
-              <select value={form.category} onChange={(e) => set("category", e.target.value as Product["category"])}
-                className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]">
+              <select
+                value={form.category}
+                onChange={(e) => set("category", e.target.value as Product["category"])}
+                className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
+              >
                 <option value="vegetables">Vegetables</option>
                 <option value="fruits">Fruits</option>
                 <option value="meat">Meat</option>
@@ -121,29 +162,41 @@ function ProductModal({
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-gray-700">Min. Order</label>
-              <input value={form.min_order} onChange={(e) => set("min_order", e.target.value)}
+              <input
+                value={form.min_order}
+                onChange={(e) => set("min_order", e.target.value)}
                 className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
-                placeholder="500 kg" />
+                placeholder="500 kg"
+              />
             </div>
 
             <div className="flex flex-col gap-1.5 sm:col-span-2">
               <label className="text-sm font-semibold text-gray-700">Tagline</label>
-              <input value={form.tagline} onChange={(e) => set("tagline", e.target.value)}
+              <input
+                value={form.tagline}
+                onChange={(e) => set("tagline", e.target.value)}
                 className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
-                placeholder="e.g. Fresh & Crisp" />
+                placeholder="e.g. Fresh & Crisp"
+              />
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-gray-700">Badge (optional)</label>
-              <input value={form.badge ?? ""} onChange={(e) => set("badge", e.target.value)}
+              <input
+                value={form.badge ?? ""}
+                onChange={(e) => set("badge", e.target.value)}
                 className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
-                placeholder="Best Seller / Seasonal / Halal" />
+                placeholder="Best Seller / Seasonal / Halal"
+              />
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-gray-700">In Stock</label>
-              <select value={form.in_stock ? "yes" : "no"} onChange={(e) => set("in_stock", e.target.value === "yes")}
-                className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]">
+              <select
+                value={form.in_stock ? "yes" : "no"}
+                onChange={(e) => set("in_stock", e.target.value === "yes")}
+                className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
+              >
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>
@@ -155,12 +208,22 @@ function ProductModal({
             <label className="text-sm font-semibold text-gray-700">Product Image *</label>
             <div className="flex items-center gap-3">
               {form.image && (
-                <img src={form.image} alt="preview" className="h-16 w-16 rounded-lg object-cover border border-gray-200" />
+                <img
+                  src={form.image}
+                  alt="preview"
+                  className="h-16 w-16 rounded-lg object-cover border border-gray-200"
+                />
               )}
               <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-600 hover:border-[#1a6b3c] hover:text-[#1a6b3c]">
                 <Upload className="size-4" />
                 {imgLoading ? "Uploading…" : "Upload Image"}
-                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={imgLoading} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                  disabled={imgLoading}
+                />
               </label>
               {/* Or paste URL */}
               <input
@@ -173,8 +236,14 @@ function ProductModal({
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
-            <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-            <Button type="submit" disabled={saving} className="bg-[#1a6b3c] text-white hover:bg-[#145530]">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={saving}
+              className="bg-[#1a6b3c] text-white hover:bg-[#145530]"
+            >
               {saving ? "Saving…" : initial ? "Save Changes" : "Add Product"}
             </Button>
           </div>
@@ -190,11 +259,21 @@ type Tab = "products" | "orders";
 function AdminPage() {
   const { user, isAdmin, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
-  const { products, addProduct, updateProduct, deleteProduct, uploadImage, loading: pLoading } = useProducts();
+  const {
+    products,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    uploadImage,
+    loading: pLoading,
+  } = useProducts();
   const { orders, fetchAllOrders, updateOrderStatus, deleteOrder, loading: oLoading } = useOrders();
 
   const [tab, setTab] = useState<Tab>("products");
-  const [modal, setModal] = useState<{ open: boolean; product: Product | null }>({ open: false, product: null });
+  const [modal, setModal] = useState<{ open: boolean; product: Product | null }>({
+    open: false,
+    product: null,
+  });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
 
@@ -261,7 +340,9 @@ function AdminPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Toast */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold shadow-lg text-white transition-all ${toast.ok ? "bg-[#1a6b3c]" : "bg-red-500"}`}>
+        <div
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold shadow-lg text-white transition-all ${toast.ok ? "bg-[#1a6b3c]" : "bg-red-500"}`}
+        >
           {toast.ok ? <CheckCircle className="size-4" /> : <AlertCircle className="size-4" />}
           {toast.msg}
         </div>
@@ -285,7 +366,9 @@ function AdminPage() {
             <h3 className="text-lg font-bold text-gray-900">Are you sure?</h3>
             <p className="mt-1 text-sm text-gray-500">This action cannot be undone.</p>
             <div className="mt-6 flex gap-3">
-              <Button variant="outline" className="flex-1" onClick={() => setDeleteConfirm(null)}>Cancel</Button>
+              <Button variant="outline" className="flex-1" onClick={() => setDeleteConfirm(null)}>
+                Cancel
+              </Button>
               <Button
                 className="flex-1 bg-red-500 text-white hover:bg-red-600"
                 onClick={() => {
@@ -308,8 +391,15 @@ function AdminPage() {
             <Link to="/" className="flex items-center gap-2">
               <span className="grid size-9 place-items-center rounded-lg bg-[#1a6b3c] text-white">
                 <svg viewBox="0 0 48 48" className="size-5" fill="none">
-                  <path d="M8 22L24 8L40 22V40H30V30H18V40H8V22Z" fill="white" fillOpacity="0.2" stroke="white" strokeWidth="2.5" strokeLinejoin="round"/>
-                  <path d="M24 36C24 28 30 24 36 24C36 32 30 36 24 36Z" fill="white"/>
+                  <path
+                    d="M8 22L24 8L40 22V40H30V30H18V40H8V22Z"
+                    fill="white"
+                    fillOpacity="0.2"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M24 36C24 28 30 24 36 24C36 32 30 36 24 36Z" fill="white" />
                 </svg>
               </span>
               <span className="text-sm font-extrabold text-[#1a6b3c] leading-tight">
@@ -319,10 +409,12 @@ function AdminPage() {
           </div>
 
           <nav className="flex-1 p-4 space-y-1">
-            {([
-              { id: "products", label: "Products", icon: Package },
-              { id: "orders", label: "Orders", icon: ShoppingBag },
-            ] as { id: Tab; label: string; icon: typeof Package }[]).map(({ id, label, icon: Icon }) => (
+            {(
+              [
+                { id: "products", label: "Products", icon: Package },
+                { id: "orders", label: "Orders", icon: ShoppingBag },
+              ] as { id: Tab; label: string; icon: typeof Package }[]
+            ).map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setTab(id)}
@@ -343,7 +435,10 @@ function AdminPage() {
               variant="outline"
               size="sm"
               className="w-full gap-2 text-gray-600"
-              onClick={async () => { await signOut(); navigate({ to: "/" }); }}
+              onClick={async () => {
+                await signOut();
+                navigate({ to: "/" });
+              }}
             >
               <LogOut className="size-4" /> Sign Out
             </Button>
@@ -356,8 +451,18 @@ function AdminPage() {
           <div className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 lg:hidden">
             <h1 className="text-lg font-extrabold text-gray-900">Admin Panel</h1>
             <div className="flex items-center gap-2">
-              <button onClick={() => setTab("products")} className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${tab === "products" ? "bg-[#1a6b3c] text-white" : "text-gray-600"}`}>Products</button>
-              <button onClick={() => setTab("orders")} className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${tab === "orders" ? "bg-[#1a6b3c] text-white" : "text-gray-600"}`}>Orders</button>
+              <button
+                onClick={() => setTab("products")}
+                className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${tab === "products" ? "bg-[#1a6b3c] text-white" : "text-gray-600"}`}
+              >
+                Products
+              </button>
+              <button
+                onClick={() => setTab("orders")}
+                className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${tab === "orders" ? "bg-[#1a6b3c] text-white" : "text-gray-600"}`}
+              >
+                Orders
+              </button>
             </div>
           </div>
 
@@ -399,7 +504,11 @@ function AdminPage() {
                             <tr key={p.id} className="hover:bg-gray-50">
                               <td className="px-5 py-3">
                                 <div className="flex items-center gap-3">
-                                  <img src={p.image} alt={p.name} className="h-10 w-10 rounded-lg object-cover" />
+                                  <img
+                                    src={p.image}
+                                    alt={p.name}
+                                    className="h-10 w-10 rounded-lg object-cover"
+                                  />
                                   <div>
                                     <p className="font-semibold text-gray-900">{p.name}</p>
                                     <p className="text-xs text-gray-400">{p.tagline}</p>
@@ -407,10 +516,14 @@ function AdminPage() {
                                 </div>
                               </td>
                               <td className="px-5 py-3 capitalize text-gray-600">{p.category}</td>
-                              <td className="px-5 py-3 font-bold text-[#1a6b3c]">${p.price}/{p.unit}</td>
+                              <td className="px-5 py-3 font-bold text-[#1a6b3c]">
+                                ${p.price}/{p.unit}
+                              </td>
                               <td className="px-5 py-3 text-gray-600">{p.min_order}</td>
                               <td className="px-5 py-3">
-                                <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${p.in_stock ? "bg-green-100 text-green-700" : "bg-red-100 text-red-500"}`}>
+                                <span
+                                  className={`rounded-full px-2 py-0.5 text-xs font-bold ${p.in_stock ? "bg-green-100 text-green-700" : "bg-red-100 text-red-500"}`}
+                                >
                                   {p.in_stock ? "In Stock" : "Out"}
                                 </span>
                               </td>
@@ -460,7 +573,10 @@ function AdminPage() {
                 ) : (
                   <div className="space-y-4">
                     {orders.map((order) => (
-                      <div key={order.id} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                      <div
+                        key={order.id}
+                        className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+                      >
                         <div className="flex flex-wrap items-start justify-between gap-4">
                           <div>
                             <p className="text-sm font-bold text-gray-900">
@@ -468,11 +584,17 @@ function AdminPage() {
                             </p>
                             <p className="text-xs text-gray-400">
                               {new Date(order.created_at).toLocaleDateString("en-GB", {
-                                day: "numeric", month: "short", year: "numeric",
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
                               })}
                             </p>
-                            <p className="mt-1 text-sm font-semibold text-gray-700">{order.customer_name}</p>
-                            <p className="text-xs text-gray-400">{order.customer_email} · {order.country}</p>
+                            <p className="mt-1 text-sm font-semibold text-gray-700">
+                              {order.customer_name}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              {order.customer_email} · {order.country}
+                            </p>
                           </div>
 
                           <div className="flex items-center gap-3">
@@ -480,11 +602,15 @@ function AdminPage() {
                             <div className="relative">
                               <select
                                 value={order.status}
-                                onChange={(e) => handleStatusChange(order.id, e.target.value as OrderStatus)}
+                                onChange={(e) =>
+                                  handleStatusChange(order.id, e.target.value as OrderStatus)
+                                }
                                 className={`rounded-full px-3 py-1.5 text-xs font-bold outline-none cursor-pointer ${STATUS_COLORS[order.status]}`}
                               >
                                 {STATUS_OPTS.map((s) => (
-                                  <option key={s} value={s} className="bg-white text-gray-700">{s}</option>
+                                  <option key={s} value={s} className="bg-white text-gray-700">
+                                    {s}
+                                  </option>
                                 ))}
                               </select>
                             </div>
@@ -503,17 +629,34 @@ function AdminPage() {
                         <div className="mt-4 space-y-2">
                           {order.items.map((item) => (
                             <div key={item.product.id} className="flex items-center gap-3 text-sm">
-                              <img src={item.product.image} alt={item.product.name} className="h-8 w-8 rounded-md object-cover" />
-                              <span className="flex-1 font-medium text-gray-700">{item.product.name}</span>
+                              <img
+                                src={item.product.image}
+                                alt={item.product.name}
+                                className="h-8 w-8 rounded-md object-cover"
+                              />
+                              <span className="flex-1 font-medium text-gray-700">
+                                {item.product.name}
+                              </span>
                               <span className="text-gray-400">{item.quantity} kg</span>
-                              <span className="font-bold text-[#1a6b3c]">${(item.product.price * item.quantity).toFixed(2)}</span>
+                              <span className="font-bold text-[#1a6b3c]">
+                                ${(item.product.price * item.quantity).toFixed(2)}
+                              </span>
                             </div>
                           ))}
                         </div>
 
                         <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-3">
-                          <span className="text-sm text-gray-500">Total: <span className="font-extrabold text-[#1a6b3c]">${order.total_price.toFixed(2)}</span></span>
-                          {order.notes && <p className="text-xs text-gray-400 max-w-xs truncate">Note: {order.notes}</p>}
+                          <span className="text-sm text-gray-500">
+                            Total:{" "}
+                            <span className="font-extrabold text-[#1a6b3c]">
+                              ${order.total_price.toFixed(2)}
+                            </span>
+                          </span>
+                          {order.notes && (
+                            <p className="text-xs text-gray-400 max-w-xs truncate">
+                              Note: {order.notes}
+                            </p>
+                          )}
                         </div>
                       </div>
                     ))}

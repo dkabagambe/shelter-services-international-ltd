@@ -1,3 +1,4 @@
+// ── existing product images ────────────────────────────────────────────────
 import frenchBeans from "@/assets/p-frenchbeans.jpg";
 import peppers from "@/assets/p-peppers.jpg";
 import cabbage from "@/assets/p-cabbage.jpg";
@@ -14,21 +15,94 @@ import pineapple from "@/assets/p-pineapple.jpg";
 import passionFruit from "@/assets/p-passion-fruit.jpg";
 import goatMeat from "@/assets/p-goat-meat.jpg";
 import sheepMeat from "@/assets/p-sheep-meat.jpg";
+import beef from "@/assets/p-beef.jpg";
+
+// ── sheep gallery ──────────────────────────────────────────────────────────
 import sheep1 from "@/assets/sheep1.jpeg";
 import sheep2 from "@/assets/sheep2.jpeg";
 import sheep3 from "@/assets/sheep3.jpeg";
 import sheep4 from "@/assets/sheep4.jpeg";
 import sheep5 from "@/assets/sheep5.jpeg";
 import sheep6 from "@/assets/sheep6.jpeg";
-import beef from "@/assets/p-beef.jpg";
 
-export const sheepGallery: string[] = [sheepMeat, sheep1, sheep2, sheep3, sheep4, sheep5, sheep6];
+// ── mango gallery ──────────────────────────────────────────────────────────
+import mango1 from "@/assets/mango1.jpeg";
+import mango2 from "@/assets/mango2.jpeg";
+import mango3 from "@/assets/mango3.jpeg";
 
-/** Extra image galleries keyed by product id */
+// ── pineapple gallery ──────────────────────────────────────────────────────
+import pineapple2 from "@/assets/pineapple2.jpeg";
+
+// ── goat gallery ───────────────────────────────────────────────────────────
+import goat from "@/assets/goat.jpeg";
+
+// ── banana gallery ─────────────────────────────────────────────────────────
+import sweetBanana from "@/assets/Sweet banana.jpeg";
+import bananaLeaves from "@/assets/Banana leaves.jpeg";
+
+// ── pepper gallery ─────────────────────────────────────────────────────────
+import redPepper from "@/assets/redpepper.jpeg";
+
+// ── new product images ─────────────────────────────────────────────────────
+import cucumber from "@/assets/cucumber.jpeg";
+import bitterMelon from "@/assets/bitter melon.jpeg";
+import curryLeaves from "@/assets/Curry leaves.jpeg";
+
+// ── avocado varieties ──────────────────────────────────────────────────────
+import hassAvocado from "@/assets/Hass Avocado.jpeg";
+import fuerteAvocado from "@/assets/Fuerte Avocado.jpeg";
+import jumboAvocado from "@/assets/Jumbo Avocado.jpeg";
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Galleries  (keyed by product id)
+// ═══════════════════════════════════════════════════════════════════════════
 export const productGalleries: Record<string, string[]> = {
-  "sheep-meat": sheepGallery,
+  "sheep-meat": [sheepMeat, sheep1, sheep2, sheep3, sheep4, sheep5, sheep6],
+  mangoes: [mangoes, mango1, mango2, mango3],
+  pineapple: [pineapple, pineapple2],
+  "goat-meat": [goatMeat, goat],
+  "yellow-bananas": [yellowBananas, sweetBanana, bananaLeaves],
+  "green-bananas": [greenBananas, bananaLeaves],
+  "green-capsicum": [peppers, redPepper],
 };
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Avocado varieties
+// ═══════════════════════════════════════════════════════════════════════════
+export type AvocadoVariety = {
+  name: string;
+  image: string;
+  description: string;
+  season: string;
+};
+
+export const avocadoVarieties: AvocadoVariety[] = [
+  {
+    name: "Hass Avocado",
+    image: hassAvocado,
+    description:
+      "The most popular export variety. Rich, creamy texture with a nutty flavour. Dark pebbly skin when ripe. High oil content - ideal for guacamole and premium retail.",
+    season: "Feb - Sep",
+  },
+  {
+    name: "Fuerte Avocado",
+    image: fuerteAvocado,
+    description:
+      "Pear-shaped with smooth, thin green skin. Mild, buttery flavour with a slightly lower oil content. Stays green when ripe - preferred in European markets.",
+    season: "Apr - Aug",
+  },
+  {
+    name: "Jumbo Avocado",
+    image: jumboAvocado,
+    description:
+      "Extra-large size, smooth green skin. Mild taste with a high flesh-to-seed ratio. Very popular in Middle East markets for its impressive size and shelf life.",
+    season: "Mar - Jul",
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Product type
+// ═══════════════════════════════════════════════════════════════════════════
 export type Product = {
   id: string;
   name: string;
@@ -43,15 +117,18 @@ export type Product = {
   reviews: number;
 };
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Products list
+// ═══════════════════════════════════════════════════════════════════════════
 export const products: Product[] = [
-  // ── Fruits ──
+  // ── Fruits ────────────────────────────────────────────────────────────────
   {
     id: "avocado",
     name: "African Avocados",
     image: avocado,
     price: 2.4,
     unit: "kg",
-    tagline: "Hass · Export Grade Class 1",
+    tagline: "Hass, Fuerte & Jumbo - Export Grade Class 1",
     minOrder: "500 kg",
     badge: "Best Seller",
     category: "fruits",
@@ -64,7 +141,7 @@ export const products: Product[] = [
     image: yellowBananas,
     price: 0.9,
     unit: "kg",
-    tagline: "Sweet & Ripe · Cavendish",
+    tagline: "Sweet & Ripe - Cavendish",
     minOrder: "1000 kg",
     category: "fruits",
     rating: 4.8,
@@ -76,7 +153,7 @@ export const products: Product[] = [
     image: greenBananas,
     price: 0.7,
     unit: "kg",
-    tagline: "Raw · Long Shelf Life",
+    tagline: "Raw - Long Shelf Life",
     minOrder: "1000 kg",
     category: "fruits",
     rating: 4.7,
@@ -101,7 +178,7 @@ export const products: Product[] = [
     image: pineapple,
     price: 1.5,
     unit: "kg",
-    tagline: "Sweet & Juicy · Export Grade",
+    tagline: "Sweet & Juicy - Export Grade",
     minOrder: "500 kg",
     category: "fruits",
     rating: 4.8,
@@ -113,14 +190,14 @@ export const products: Product[] = [
     image: passionFruit,
     price: 3.2,
     unit: "kg",
-    tagline: "Purple · Naturally Sweet",
+    tagline: "Purple - Naturally Sweet",
     minOrder: "300 kg",
     category: "fruits",
     rating: 4.9,
     reviews: 88,
   },
 
-  // ── Meat ──
+  // ── Meat ──────────────────────────────────────────────────────────────────
   {
     id: "goat-meat",
     name: "Goat Meat",
@@ -153,7 +230,7 @@ export const products: Product[] = [
     image: beef,
     price: 7.5,
     unit: "kg",
-    tagline: "Grass-Fed · Export Grade",
+    tagline: "Grass-Fed - Export Grade",
     minOrder: "300 kg",
     badge: "Halal",
     category: "meat",
@@ -161,7 +238,7 @@ export const products: Product[] = [
     reviews: 93,
   },
 
-  // ── Vegetables (original, unchanged) ──
+  // ── Vegetables ────────────────────────────────────────────────────────────
   {
     id: "french-beans",
     name: "French Beans",
@@ -176,11 +253,11 @@ export const products: Product[] = [
   },
   {
     id: "green-capsicum",
-    name: "Green Capsicum",
+    name: "Capsicum / Peppers",
     image: peppers,
     price: 1.6,
     unit: "kg",
-    tagline: "Premium Quality",
+    tagline: "Green & Red - Premium Quality",
     minOrder: "1000 kg",
     category: "vegetables",
     rating: 4.9,
@@ -240,7 +317,7 @@ export const products: Product[] = [
     image: babyCorn,
     price: 2.9,
     unit: "kg",
-    tagline: "Tender · Uniform Grade",
+    tagline: "Tender - Uniform Grade",
     minOrder: "300 kg",
     category: "vegetables",
     rating: 4.7,
@@ -252,10 +329,48 @@ export const products: Product[] = [
     image: snowPeas,
     price: 3.1,
     unit: "kg",
-    tagline: "Flat Pod · Premium",
+    tagline: "Flat Pod - Premium",
     minOrder: "300 kg",
     category: "vegetables",
     rating: 4.8,
     reviews: 73,
+  },
+  // ── New products from newly added images ─────────────────────────────────
+  {
+    id: "cucumber",
+    name: "Cucumber",
+    image: cucumber,
+    price: 1.3,
+    unit: "kg",
+    tagline: "Crisp & Fresh - Export Grade",
+    minOrder: "500 kg",
+    category: "vegetables",
+    rating: 4.7,
+    reviews: 42,
+  },
+  {
+    id: "bitter-melon",
+    name: "Bitter Melon",
+    image: bitterMelon,
+    price: 2.1,
+    unit: "kg",
+    tagline: "Bitter Gourd - Popular in Asian Markets",
+    minOrder: "300 kg",
+    category: "vegetables",
+    rating: 4.6,
+    reviews: 29,
+  },
+  {
+    id: "curry-leaves",
+    name: "Curry Leaves",
+    image: curryLeaves,
+    price: 4.5,
+    unit: "kg",
+    tagline: "Fresh & Aromatic - Premium Herb",
+    minOrder: "50 kg",
+    badge: "Fresh",
+    category: "vegetables",
+    rating: 4.9,
+    reviews: 37,
   },
 ];

@@ -56,7 +56,8 @@ export function WhyChooseUs() {
             A supply partner built for serious importers
           </h2>
           <p className="mt-3 text-base leading-relaxed text-gray-500">
-            We go beyond produce - we provide end-to-end export support that keeps your supply chain reliable.
+            We go beyond produce - we provide end-to-end export support that keeps your supply chain
+            reliable.
           </p>
         </div>
 
@@ -70,7 +71,9 @@ export function WhyChooseUs() {
               transition={{ duration: 0.45, delay: (i % 3) * 0.09 }}
               className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
             >
-              <span className={`grid h-14 w-14 place-items-center rounded-2xl ${iconBg} ${iconColor}`}>
+              <span
+                className={`grid h-14 w-14 place-items-center rounded-2xl ${iconBg} ${iconColor}`}
+              >
                 <Icon className="size-6" />
               </span>
               <h3 className="mt-6 text-lg font-bold text-gray-900">{title}</h3>

@@ -24,7 +24,10 @@ function LoginPage() {
     setLoading(true);
     const { error } = await signIn(email, password);
     setLoading(false);
-    if (error) { setError(error); return; }
+    if (error) {
+      setError(error);
+      return;
+    }
     navigate({ to: "/" });
   }
 
@@ -38,7 +41,9 @@ function LoginPage() {
           </span>
           <div className="leading-tight">
             <p className="text-base font-extrabold text-[#1a6b3c]">SHELTER SERVICES</p>
-            <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">International Limited</p>
+            <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
+              International Limited
+            </p>
           </div>
         </Link>
 
@@ -54,7 +59,9 @@ function LoginPage() {
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="email">Email</label>
+              <label className="text-sm font-semibold text-gray-700" htmlFor="email">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -67,7 +74,9 @@ function LoginPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="password">Password</label>
+              <label className="text-sm font-semibold text-gray-700" htmlFor="password">
+                Password
+              </label>
               <div className="relative">
                 <input
                   id="password"
@@ -93,7 +102,13 @@ function LoginPage() {
               disabled={loading}
               className="w-full gap-2 bg-[#1a6b3c] py-3 text-sm font-bold text-white hover:bg-[#145530] disabled:opacity-60"
             >
-              {loading ? "Signing in…" : <><LogIn className="size-4" /> Sign In</>}
+              {loading ? (
+                "Signing in…"
+              ) : (
+                <>
+                  <LogIn className="size-4" /> Sign In
+                </>
+              )}
             </Button>
           </form>
 

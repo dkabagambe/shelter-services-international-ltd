@@ -24,12 +24,21 @@ function SignupPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    if (password !== confirm) { setError("Passwords do not match."); return; }
-    if (password.length < 6) { setError("Password must be at least 6 characters."); return; }
+    if (password !== confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
     setLoading(true);
     const { error } = await signUp(email, password, fullName);
     setLoading(false);
-    if (error) { setError(error); return; }
+    if (error) {
+      setError(error);
+      return;
+    }
     setSuccess(true);
   }
 
@@ -64,7 +73,9 @@ function SignupPage() {
           </span>
           <div className="leading-tight">
             <p className="text-base font-extrabold text-[#1a6b3c]">SHELTER SERVICES</p>
-            <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">International Limited</p>
+            <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
+              International Limited
+            </p>
           </div>
         </Link>
 
@@ -80,7 +91,9 @@ function SignupPage() {
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="fullName">Full Name</label>
+              <label className="text-sm font-semibold text-gray-700" htmlFor="fullName">
+                Full Name
+              </label>
               <input
                 id="fullName"
                 required
@@ -92,7 +105,9 @@ function SignupPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="email">Email</label>
+              <label className="text-sm font-semibold text-gray-700" htmlFor="email">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -105,7 +120,9 @@ function SignupPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="password">Password</label>
+              <label className="text-sm font-semibold text-gray-700" htmlFor="password">
+                Password
+              </label>
               <div className="relative">
                 <input
                   id="password"
@@ -127,7 +144,9 @@ function SignupPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="confirm">Confirm Password</label>
+              <label className="text-sm font-semibold text-gray-700" htmlFor="confirm">
+                Confirm Password
+              </label>
               <input
                 id="confirm"
                 type="password"
@@ -144,7 +163,13 @@ function SignupPage() {
               disabled={loading}
               className="w-full gap-2 bg-[#1a6b3c] py-3 text-sm font-bold text-white hover:bg-[#145530] disabled:opacity-60"
             >
-              {loading ? "Creating account…" : <><UserPlus className="size-4" /> Create Account</>}
+              {loading ? (
+                "Creating account…"
+              ) : (
+                <>
+                  <UserPlus className="size-4" /> Create Account
+                </>
+              )}
             </Button>
           </form>
 

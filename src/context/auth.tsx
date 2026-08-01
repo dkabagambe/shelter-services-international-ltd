@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 import type { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 
@@ -37,11 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   async function fetchProfile(userId: string) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
+    const { data } = await supabase.from("profiles").select("*").eq("id", userId).single();
     if (data) setProfile(data as Profile);
   }
 
@@ -53,7 +42,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
@@ -98,7 +89,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isAdmin = profile?.role === "admin";
 
   return (
-    <AuthContext.Provider value={{ user, profile, session, loading, isAdmin, signUp, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user, profile, session, loading, isAdmin, signUp, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

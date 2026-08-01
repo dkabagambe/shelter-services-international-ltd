@@ -5,10 +5,10 @@ import produceImage from "@/assets/hero-produce-removebg-preview.png";
 import nairobiImage from "@/assets/nairobi.jpg";
 
 const highlights = [
-  { icon: CheckCircle, title: "Farm Fresh",       sub: "Handpicked Quality" },
+  { icon: CheckCircle, title: "Farm Fresh", sub: "Handpicked Quality" },
   { icon: ShieldCheck, title: "Global Standards", sub: "Export Quality" },
-  { icon: Truck,       title: "On-Time Delivery", sub: "Reliable & Efficient" },
-  { icon: Snowflake,   title: "Cold Chain",        sub: "Freshness Guaranteed" },
+  { icon: Truck, title: "On-Time Delivery", sub: "Reliable & Efficient" },
+  { icon: Snowflake, title: "Cold Chain", sub: "Freshness Guaranteed" },
 ];
 
 export function Hero() {
@@ -29,7 +29,10 @@ export function Hero() {
           }}
         />
 
-        <div className="relative z-10 flex flex-col justify-center px-8 py-12 sm:px-10" style={{ minHeight: "480px" }}>
+        <div
+          className="relative z-10 flex flex-col justify-center px-8 py-12 sm:px-10"
+          style={{ minHeight: "480px" }}
+        >
           {/* Eyebrow */}
           <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white/80 backdrop-blur-sm">
             🇰🇪 Nairobi, Kenya
@@ -37,9 +40,7 @@ export function Hero() {
 
           <h1 className="text-2xl font-bold leading-snug tracking-tight text-white sm:text-3xl">
             Premium Fresh Vegetables
-            <span className="mt-0.5 block text-[#6ee7a0]">
-              from Kenya to the World
-            </span>
+            <span className="mt-0.5 block text-[#6ee7a0]">from Kenya to the World</span>
           </h1>
 
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/80">
@@ -47,13 +48,20 @@ export function Hero() {
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2.5">
-            <Link to="/shop">
-              <Button size="sm" className="gap-1.5 bg-[#1a6b3c] px-5 text-white shadow-md hover:bg-[#145530]">
+            <Link to="/shop" search={{ category: undefined, q: "" }}>
+              <Button
+                size="sm"
+                className="gap-1.5 bg-[#1a6b3c] px-5 text-white shadow-md hover:bg-[#145530]"
+              >
                 <ShoppingCart className="size-3.5" /> Order Now
               </Button>
             </Link>
             <Link to="/checkout">
-              <Button size="sm" variant="outline" className="gap-1.5 border-white/60 bg-white/10 px-5 text-white backdrop-blur-sm hover:bg-white/20">
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5 border-white/60 bg-white/10 px-5 text-white backdrop-blur-sm hover:bg-white/20"
+              >
                 <FileText className="size-3.5" /> Get a Quote
               </Button>
             </Link>
@@ -85,7 +93,10 @@ export function Hero() {
       </section>
 
       {/* ── DESKTOP ────────────────────────────────────────────────── */}
-      <section className="relative hidden w-full overflow-hidden lg:block" style={{ minHeight: "460px" }}>
+      <section
+        className="relative hidden w-full overflow-hidden lg:block"
+        style={{ minHeight: "460px" }}
+      >
         {/* Nairobi background */}
         <img
           src={nairobiImage}
@@ -109,7 +120,12 @@ export function Hero() {
           src={produceImage}
           alt="Premium fresh Kenyan vegetables"
           className="absolute bottom-0 right-0 z-10"
-          style={{ height: "100%", width: "55%", objectFit: "contain", objectPosition: "right bottom" }}
+          style={{
+            height: "100%",
+            width: "55%",
+            objectFit: "contain",
+            objectPosition: "right bottom",
+          }}
         />
 
         {/* Text block */}
@@ -134,13 +150,16 @@ export function Hero() {
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/shop">
+            <Link to="/shop" search={{ category: undefined, q: "" }}>
               <Button className="gap-2 bg-[#1a6b3c] px-6 text-sm font-semibold text-white shadow-md hover:bg-[#145530]">
                 <ShoppingCart className="size-4" /> Order Now
               </Button>
             </Link>
             <Link to="/checkout">
-              <Button variant="outline" className="gap-2 border-gray-400 bg-white/80 px-6 text-sm font-semibold text-gray-700 hover:border-[#1a6b3c] hover:text-[#1a6b3c]">
+              <Button
+                variant="outline"
+                className="gap-2 border-gray-400 bg-white/80 px-6 text-sm font-semibold text-gray-700 hover:border-[#1a6b3c] hover:text-[#1a6b3c]"
+              >
                 <FileText className="size-4" /> Request a Quote
               </Button>
             </Link>

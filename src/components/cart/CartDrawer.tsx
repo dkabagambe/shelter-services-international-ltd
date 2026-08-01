@@ -3,7 +3,6 @@ import { useCart } from "@/context/cart";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 
-
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQty, totalPrice, totalQty } = useCart();
 
@@ -76,7 +75,9 @@ export function CartDrawer() {
                   <div className="flex min-w-0 flex-1 flex-col justify-between">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <p className="text-sm font-bold text-gray-900 leading-tight">{product.name}</p>
+                        <p className="text-sm font-bold text-gray-900 leading-tight">
+                          {product.name}
+                        </p>
                         <p className="text-xs text-gray-500">{product.tagline}</p>
                       </div>
                       <button
@@ -134,15 +135,18 @@ export function CartDrawer() {
                 ${totalPrice.toFixed(2)}
               </span>
             </div>
-            <p className="text-xs text-gray-400">
-              Shipping and taxes calculated at checkout.
-            </p>
+            <p className="text-xs text-gray-400">Shipping and taxes calculated at checkout.</p>
             <Link to="/checkout" onClick={closeCart} className="block">
               <Button className="w-full bg-[#1a6b3c] text-white hover:bg-[#145530] text-sm font-bold py-3">
                 Proceed to Checkout
               </Button>
             </Link>
-            <Link to="/shop" onClick={closeCart} className="block">
+            <Link
+              to="/shop"
+              search={{ category: undefined, q: "" }}
+              onClick={closeCart}
+              className="block"
+            >
               <Button variant="outline" className="w-full border-gray-300 text-gray-700 text-sm">
                 Continue Shopping
               </Button>

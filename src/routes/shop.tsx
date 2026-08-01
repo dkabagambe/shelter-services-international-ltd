@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { ShoppingCart, Search, SlidersHorizontal, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useProducts, type Product } from "@/context/products";
+import { useProducts } from "@/context/use-products";
+import type { Product } from "@/context/products";
 import { useCart } from "@/context/cart";
 import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import { SiteHeader } from "@/components/home/SiteHeader";
@@ -35,10 +36,10 @@ export const Route = createFileRoute("/shop")({
 });
 
 const categoryFilters: { label: string; value: CategoryFilter }[] = [
-  { label: "All",        value: "all" },
-  { label: "Fruits",     value: "fruits" },
+  { label: "All", value: "all" },
+  { label: "Fruits", value: "fruits" },
   { label: "Vegetables", value: "vegetables" },
-  { label: "Meat",       value: "meat" },
+  { label: "Meat", value: "meat" },
 ];
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
@@ -59,7 +60,9 @@ function ProductCard({ p }: { p: Product }) {
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-2">
           <Link to="/products/$id" params={{ id: p.id }}>
-            <h3 className="text-base font-bold text-gray-900 transition-colors hover:text-[#1a6b3c]">{p.name}</h3>
+            <h3 className="text-base font-bold text-gray-900 transition-colors hover:text-[#1a6b3c]">
+              {p.name}
+            </h3>
           </Link>
           {p.badge && (
             <span className="shrink-0 rounded-full bg-[#1a6b3c] px-2 py-0.5 text-[10px] font-bold text-white">
@@ -77,11 +80,19 @@ function ProductCard({ p }: { p: Product }) {
         </p>
         <div className="mt-4 flex items-center gap-2">
           <div className="flex items-center gap-2 rounded-lg border border-gray-200 px-2 py-1">
-            <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="text-gray-600 hover:text-[#1a6b3c]" aria-label="Decrease">
+            <button
+              onClick={() => setQty((q) => Math.max(1, q - 1))}
+              className="text-gray-600 hover:text-[#1a6b3c]"
+              aria-label="Decrease"
+            >
               <Minus className="size-3.5" />
             </button>
             <span className="min-w-[40px] text-center text-sm font-semibold">{qty} kg</span>
-            <button onClick={() => setQty((q) => q + 1)} className="text-gray-600 hover:text-[#1a6b3c]" aria-label="Increase">
+            <button
+              onClick={() => setQty((q) => q + 1)}
+              className="text-gray-600 hover:text-[#1a6b3c]"
+              aria-label="Increase"
+            >
               <Plus className="size-3.5" />
             </button>
           </div>
@@ -107,12 +118,16 @@ function ShopPage() {
   const { category: urlCategory, q: urlQ } = Route.useSearch();
 
   const [category, setCategory] = useState<CategoryFilter>(urlCategory);
-  const [search, setSearch]     = useState(urlQ);
-  const [sortBy, setSortBy]     = useState<"name" | "price-asc" | "price-desc">("name");
+  const [search, setSearch] = useState(urlQ);
+  const [sortBy, setSortBy] = useState<"name" | "price-asc" | "price-desc">("name");
 
   // Sync URL → state when navigating here from a category card
-  useEffect(() => { setCategory(urlCategory); }, [urlCategory]);
-  useEffect(() => { setSearch(urlQ); },         [urlQ]);
+  useEffect(() => {
+    setCategory(urlCategory);
+  }, [urlCategory]);
+  useEffect(() => {
+    setSearch(urlQ);
+  }, [urlQ]);
 
   // Update URL when filters change (so links are shareable)
   function changeCategory(val: CategoryFilter) {
@@ -124,7 +139,7 @@ function ShopPage() {
     .filter((p) => category === "all" || p.category === category)
     .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
-      if (sortBy === "price-asc")  return a.price - b.price;
+      if (sortBy === "price-asc") return a.price - b.price;
       if (sortBy === "price-desc") return b.price - a.price;
       return a.name.localeCompare(b.name);
     });
@@ -191,7 +206,9 @@ function ShopPage() {
         <p className="mb-6 text-sm text-gray-500">
           Showing <span className="font-semibold text-gray-800">{filtered.length}</span> products
           {category !== "all" && (
-            <span className="ml-1 text-gray-400">in <span className="font-semibold capitalize text-gray-600">{category}</span></span>
+            <span className="ml-1 text-gray-400">
+              in <span className="font-semibold capitalize text-gray-600">{category}</span>
+            </span>
           )}
         </p>
 
@@ -203,7 +220,13 @@ function ShopPage() {
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-4 py-20 text-center">
             <p className="text-base font-semibold text-gray-500">No products match your search.</p>
-            <Button variant="outline" onClick={() => { setSearch(""); changeCategory("all"); }}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSearch("");
+                changeCategory("all");
+              }}
+            >
               Clear filters
             </Button>
           </div>

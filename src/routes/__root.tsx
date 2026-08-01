@@ -84,7 +84,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Shelter Services International | Fresh Kenyan Produce Exporter" },
-      { name: "description", content: "Premium fresh fruits & vegetables exported from Nairobi, Kenya." },
+      {
+        name: "description",
+        content: "Premium fresh fruits & vegetables exported from Nairobi, Kenya.",
+      },
       { name: "author", content: "Shelter Services International" },
       { property: "og:title", content: "Shelter Services International" },
       { property: "og:description", content: "Premium fresh Kenyan produce exported worldwide." },

@@ -3,21 +3,14 @@
  * - Reads/writes from Supabase `products` table when connected
  * - Falls back to the static seed data so the site works before Supabase is set up
  */
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-  type ReactNode,
-} from "react";
+import { createContext, useEffect, useState, useCallback, type ReactNode } from "react";
 import { supabase } from "@/lib/supabase";
 import { products as seedProducts } from "@/data/products";
 
 export type Product = {
   id: string;
   name: string;
-  image: string;         // URL (Supabase storage) or imported asset path
+  image: string; // URL (Supabase storage) or imported asset path
   price: number;
   unit: string;
   tagline: string;
@@ -59,7 +52,7 @@ interface ProductsContextValue {
   uploadImage: (file: File) => Promise<{ url: string | null; error: string | null }>;
 }
 
-const ProductsContext = createContext<ProductsContextValue | null>(null);
+export const ProductsContext = createContext<ProductsContextValue | null>(null);
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(SEED);
@@ -69,10 +62,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     if (!useSupabase) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .order("name");
+    const { data, error } = await supabase.from("products").select("*").order("name");
     setLoading(false);
     if (error || !data) {
       // Supabase not configured yet - use seed data
@@ -87,41 +77,52 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     }
   }, [useSupabase]);
 
-  useEffect(() => { refresh(); }, []);
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
-  const addProduct = useCallback(async (p: Omit<Product, "id">) => {
-    if (!useSupabase) {
-      const newProduct: Product = { ...p, id: crypto.randomUUID() };
-      setProducts((prev) => [...prev, newProduct]);
+  const addProduct = useCallback(
+    async (p: Omit<Product, "id">) => {
+      if (!useSupabase) {
+        const newProduct: Product = { ...p, id: crypto.randomUUID() };
+        setProducts((prev) => [...prev, newProduct]);
+        return { error: null };
+      }
+      const { error } = await supabase.from("products").insert(p);
+      if (error) return { error: error.message };
+      await refresh();
       return { error: null };
-    }
-    const { error } = await supabase.from("products").insert(p);
-    if (error) return { error: error.message };
-    await refresh();
-    return { error: null };
-  }, [useSupabase, refresh]);
+    },
+    [useSupabase, refresh],
+  );
 
-  const updateProduct = useCallback(async (id: string, p: Partial<Product>) => {
-    if (!useSupabase) {
-      setProducts((prev) => prev.map((x) => (x.id === id ? { ...x, ...p } : x)));
+  const updateProduct = useCallback(
+    async (id: string, p: Partial<Product>) => {
+      if (!useSupabase) {
+        setProducts((prev) => prev.map((x) => (x.id === id ? { ...x, ...p } : x)));
+        return { error: null };
+      }
+      const { error } = await supabase.from("products").update(p).eq("id", id);
+      if (error) return { error: error.message };
+      await refresh();
       return { error: null };
-    }
-    const { error } = await supabase.from("products").update(p).eq("id", id);
-    if (error) return { error: error.message };
-    await refresh();
-    return { error: null };
-  }, [useSupabase, refresh]);
+    },
+    [useSupabase, refresh],
+  );
 
-  const deleteProduct = useCallback(async (id: string) => {
-    if (!useSupabase) {
-      setProducts((prev) => prev.filter((x) => x.id !== id));
+  const deleteProduct = useCallback(
+    async (id: string) => {
+      if (!useSupabase) {
+        setProducts((prev) => prev.filter((x) => x.id !== id));
+        return { error: null };
+      }
+      const { error } = await supabase.from("products").delete().eq("id", id);
+      if (error) return { error: error.message };
+      await refresh();
       return { error: null };
-    }
-    const { error } = await supabase.from("products").delete().eq("id", id);
-    if (error) return { error: error.message };
-    await refresh();
-    return { error: null };
-  }, [useSupabase, refresh]);
+    },
+    [useSupabase, refresh],
+  );
 
   const uploadImage = useCallback(async (file: File) => {
     const path = `products/${Date.now()}-${file.name}`;
@@ -132,14 +133,10 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ProductsContext.Provider value={{ products, loading, refresh, addProduct, updateProduct, deleteProduct, uploadImage }}>
+    <ProductsContext.Provider
+      value={{ products, loading, refresh, addProduct, updateProduct, deleteProduct, uploadImage }}
+    >
       {children}
     </ProductsContext.Provider>
   );
-}
-
-export function useProducts() {
-  const ctx = useContext(ProductsContext);
-  if (!ctx) throw new Error("useProducts must be used inside ProductsProvider");
-  return ctx;
 }

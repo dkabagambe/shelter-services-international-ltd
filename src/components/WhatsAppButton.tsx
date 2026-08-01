@@ -1,6 +1,6 @@
 const WHATSAPP_NUMBER = "254703372539";
 const WHATSAPP_MESSAGE = encodeURIComponent(
-  "Hello, I'm interested in importing fresh produce from Shelter Services International. Could you please assist me?"
+  "Hello, I'm interested in importing fresh produce from Shelter Services International. Could you please assist me?",
 );
 
 export function WhatsAppButton() {

@@ -33,7 +33,9 @@ function CheckoutPage() {
     notes: "",
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   }
 
@@ -111,27 +113,38 @@ function CheckoutPage() {
           <div className="mt-8 w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm">
             <h2 className="mb-4 text-base font-bold text-gray-900">Order Summary</h2>
             <ul className="space-y-3">
-              {items.length > 0
-                ? items.map(({ product, quantity }) => (
-                    <li key={product.id} className="flex items-center gap-3 text-sm">
-                      <img src={product.image} alt={product.name} className="h-10 w-10 rounded-lg object-cover" />
-                      <span className="flex-1 font-medium text-gray-700">{product.name}</span>
-                      <span className="text-gray-400">{quantity} kg</span>
-                      <span className="font-bold text-[#1a6b3c]">${(product.price * quantity).toFixed(2)}</span>
-                    </li>
-                  ))
-                : <li className="text-sm text-gray-400">Items cleared after checkout.</li>
-              }
+              {items.length > 0 ? (
+                items.map(({ product, quantity }) => (
+                  <li key={product.id} className="flex items-center gap-3 text-sm">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-10 w-10 rounded-lg object-cover"
+                    />
+                    <span className="flex-1 font-medium text-gray-700">{product.name}</span>
+                    <span className="text-gray-400">{quantity} kg</span>
+                    <span className="font-bold text-[#1a6b3c]">
+                      ${(product.price * quantity).toFixed(2)}
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <li className="text-sm text-gray-400">Items cleared after checkout.</li>
+              )}
             </ul>
             <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
               <span className="text-sm font-bold text-gray-900">Total</span>
-              <span className="text-lg font-extrabold text-[#1a6b3c]">${totalPrice.toFixed(2)}</span>
+              <span className="text-lg font-extrabold text-[#1a6b3c]">
+                ${totalPrice.toFixed(2)}
+              </span>
             </div>
           </div>
 
           <div className="mt-8 flex gap-4">
-            <Link to="/shop">
-              <Button className="bg-[#1a6b3c] text-white hover:bg-[#145530]">Continue Shopping</Button>
+            <Link to="/shop" search={{ category: undefined, q: "" }}>
+              <Button className="bg-[#1a6b3c] text-white hover:bg-[#145530]">
+                Continue Shopping
+              </Button>
             </Link>
             {user && (
               <Link to="/account">
@@ -153,9 +166,17 @@ function CheckoutPage() {
       <main className="shell py-10">
         {/* Breadcrumb */}
         <nav className="mb-8 flex items-center gap-2 text-sm text-gray-500">
-          <Link to="/" className="hover:text-[#1a6b3c] transition-colors">Home</Link>
+          <Link to="/" className="hover:text-[#1a6b3c] transition-colors">
+            Home
+          </Link>
           <span>/</span>
-          <Link to="/shop" className="hover:text-[#1a6b3c] transition-colors">Shop</Link>
+          <Link
+            to="/shop"
+            search={{ category: undefined, q: "" }}
+            className="hover:text-[#1a6b3c] transition-colors"
+          >
+            Shop
+          </Link>
           <span>/</span>
           <span className="font-semibold text-gray-800">Checkout</span>
         </nav>
@@ -166,8 +187,10 @@ function CheckoutPage() {
           <div className="flex flex-col items-center gap-6 py-24 text-center">
             <ShoppingCart className="size-14 text-gray-200" />
             <p className="text-base font-semibold text-gray-500">Your cart is empty.</p>
-            <Link to="/shop">
-              <Button className="bg-[#1a6b3c] text-white hover:bg-[#145530]">Browse Products</Button>
+            <Link to="/shop" search={{ category: undefined, q: "" }}>
+              <Button className="bg-[#1a6b3c] text-white hover:bg-[#145530]">
+                Browse Products
+              </Button>
             </Link>
           </div>
         ) : (
@@ -179,11 +202,41 @@ function CheckoutPage() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   {(
                     [
-                      { id: "name",    label: "Full Name",       type: "text",  required: true,  placeholder: "John Doe" },
-                      { id: "company", label: "Company Name",    type: "text",  required: false, placeholder: "Your Business Ltd." },
-                      { id: "email",   label: "Email Address",   type: "email", required: true,  placeholder: "you@company.com" },
-                      { id: "phone",   label: "Phone / WhatsApp",type: "tel",   required: true,  placeholder: "+971 50 000 0000" },
-                      { id: "city",    label: "City",            type: "text",  required: false, placeholder: "Dubai" },
+                      {
+                        id: "name",
+                        label: "Full Name",
+                        type: "text",
+                        required: true,
+                        placeholder: "John Doe",
+                      },
+                      {
+                        id: "company",
+                        label: "Company Name",
+                        type: "text",
+                        required: false,
+                        placeholder: "Your Business Ltd.",
+                      },
+                      {
+                        id: "email",
+                        label: "Email Address",
+                        type: "email",
+                        required: true,
+                        placeholder: "you@company.com",
+                      },
+                      {
+                        id: "phone",
+                        label: "Phone / WhatsApp",
+                        type: "tel",
+                        required: true,
+                        placeholder: "+971 50 000 0000",
+                      },
+                      {
+                        id: "city",
+                        label: "City",
+                        type: "text",
+                        required: false,
+                        placeholder: "Dubai",
+                      },
                     ] as const
                   ).map(({ id, label, type, required, placeholder }) => (
                     <div key={id} className="flex flex-col gap-1.5">
@@ -216,9 +269,24 @@ function CheckoutPage() {
                       className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#1a6b3c] focus:ring-1 focus:ring-[#1a6b3c]"
                     >
                       <option value="">Select country</option>
-                      {["United Arab Emirates","Saudi Arabia","Qatar","Oman","Kuwait","Bahrain",
-                        "United Kingdom","Netherlands","Germany","France","Canada","Australia","Japan","Other"]
-                        .map((c) => <option key={c}>{c}</option>)}
+                      {[
+                        "United Arab Emirates",
+                        "Saudi Arabia",
+                        "Qatar",
+                        "Oman",
+                        "Kuwait",
+                        "Bahrain",
+                        "United Kingdom",
+                        "Netherlands",
+                        "Germany",
+                        "France",
+                        "Canada",
+                        "Australia",
+                        "Japan",
+                        "Other",
+                      ].map((c) => (
+                        <option key={c}>{c}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -243,15 +311,17 @@ function CheckoutPage() {
               <div className="flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50 px-5 py-4 text-sm text-blue-700">
                 <Mail className="mt-0.5 size-4 shrink-0" />
                 <span>
-                  A receipt will be sent to <strong>{form.email || "your email"}</strong> and our team at{" "}
-                  <strong>danielkabagambe@gmail.com</strong> immediately after you submit.
+                  A receipt will be sent to <strong>{form.email || "your email"}</strong> and our
+                  team at <strong>danielkabagambe@gmail.com</strong> immediately after you submit.
                 </span>
               </div>
 
               {!user && (
                 <p className="text-sm text-gray-500">
                   Have an account?{" "}
-                  <Link to="/login" className="font-semibold text-[#1a6b3c] hover:underline">Sign in</Link>{" "}
+                  <Link to="/login" className="font-semibold text-[#1a6b3c] hover:underline">
+                    Sign in
+                  </Link>{" "}
                   to track your orders.
                 </p>
               )}
@@ -288,7 +358,9 @@ function CheckoutPage() {
                       />
                       <div className="flex min-w-0 flex-1 flex-col justify-between">
                         <div className="flex items-start justify-between gap-2">
-                          <p className="text-sm font-bold text-gray-900 leading-tight">{product.name}</p>
+                          <p className="text-sm font-bold text-gray-900 leading-tight">
+                            {product.name}
+                          </p>
                           <button
                             type="button"
                             onClick={() => removeItem(product.id)}
@@ -300,9 +372,23 @@ function CheckoutPage() {
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-2 py-0.5">
-                            <button type="button" onClick={() => updateQty(product.id, quantity - 1)} className="text-gray-500 hover:text-[#1a6b3c] text-xs font-bold">−</button>
-                            <span className="text-xs font-semibold text-gray-700">{quantity} kg</span>
-                            <button type="button" onClick={() => updateQty(product.id, quantity + 1)} className="text-gray-500 hover:text-[#1a6b3c] text-xs font-bold">+</button>
+                            <button
+                              type="button"
+                              onClick={() => updateQty(product.id, quantity - 1)}
+                              className="text-gray-500 hover:text-[#1a6b3c] text-xs font-bold"
+                            >
+                              −
+                            </button>
+                            <span className="text-xs font-semibold text-gray-700">
+                              {quantity} kg
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => updateQty(product.id, quantity + 1)}
+                              className="text-gray-500 hover:text-[#1a6b3c] text-xs font-bold"
+                            >
+                              +
+                            </button>
                           </div>
                           <p className="text-sm font-bold text-[#1a6b3c]">
                             ${(product.price * quantity).toFixed(2)}
@@ -320,7 +406,9 @@ function CheckoutPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-base font-bold text-gray-900">Subtotal</span>
-                    <span className="text-xl font-extrabold text-[#1a6b3c]">${totalPrice.toFixed(2)}</span>
+                    <span className="text-xl font-extrabold text-[#1a6b3c]">
+                      ${totalPrice.toFixed(2)}
+                    </span>
                   </div>
                   <p className="text-xs text-gray-400">
                     Shipping, duties and final pricing confirmed in your quote.
@@ -330,6 +418,7 @@ function CheckoutPage() {
 
               <Link
                 to="/shop"
+                search={{ category: undefined, q: "" }}
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1a6b3c] hover:underline"
               >
                 <ArrowLeft className="size-4" /> Continue Shopping

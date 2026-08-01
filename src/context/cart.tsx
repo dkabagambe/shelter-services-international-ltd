@@ -31,7 +31,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const existing = prev.find((i) => i.product.id === product.id);
       if (existing) {
         return prev.map((i) =>
-          i.product.id === product.id ? { ...i, quantity: i.quantity + qty } : i
+          i.product.id === product.id ? { ...i, quantity: i.quantity + qty } : i,
         );
       }
       return [...prev, { product, quantity: qty }];
@@ -48,7 +48,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setItems((prev) => prev.filter((i) => i.product.id !== productId));
     } else {
       setItems((prev) =>
-        prev.map((i) => (i.product.id === productId ? { ...i, quantity: qty } : i))
+        prev.map((i) => (i.product.id === productId ? { ...i, quantity: qty } : i)),
       );
     }
   }, []);

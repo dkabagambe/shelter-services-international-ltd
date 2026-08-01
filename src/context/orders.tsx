@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 import { supabase } from "@/lib/supabase";
 import type { CartItem } from "./cart";
 
@@ -47,28 +41,21 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   const [myOrders, setMyOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const placeOrder = useCallback(
-    async (fields: Omit<Order, "id" | "created_at" | "status">) => {
-      const row = { ...fields, status: "pending" as OrderStatus };
-      const { data, error } = await supabase
-        .from("orders")
-        .insert(row)
-        .select("id")
-        .single();
-      if (error) {
-        // Supabase not set up - store locally
-        const local: Order = {
-          ...row,
-          id: crypto.randomUUID(),
-          created_at: new Date().toISOString(),
-        };
-        setMyOrders((prev) => [local, ...prev]);
-        return { error: null, orderId: local.id };
-      }
-      return { error: null, orderId: data.id as string };
-    },
-    []
-  );
+  const placeOrder = useCallback(async (fields: Omit<Order, "id" | "created_at" | "status">) => {
+    const row = { ...fields, status: "pending" as OrderStatus };
+    const { data, error } = await supabase.from("orders").insert(row).select("id").single();
+    if (error) {
+      // Supabase not set up - store locally
+      const local: Order = {
+        ...row,
+        id: crypto.randomUUID(),
+        created_at: new Date().toISOString(),
+      };
+      setMyOrders((prev) => [local, ...prev]);
+      return { error: null, orderId: local.id };
+    }
+    return { error: null, orderId: data.id as string };
+  }, []);
 
   const fetchAllOrders = useCallback(async () => {
     setLoading(true);
@@ -107,7 +94,16 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
 
   return (
     <OrdersContext.Provider
-      value={{ orders, myOrders, loading, placeOrder, fetchAllOrders, fetchMyOrders, updateOrderStatus, deleteOrder }}
+      value={{
+        orders,
+        myOrders,
+        loading,
+        placeOrder,
+        fetchAllOrders,
+        fetchMyOrders,
+        updateOrderStatus,
+        deleteOrder,
+      }}
     >
       {children}
     </OrdersContext.Provider>

@@ -1,17 +1,30 @@
 import { useState } from "react";
-import { ShoppingCart, ArrowRight, Leaf, Apple, Beef, Carrot, Flower2, Package, LayoutGrid, Plus, Minus } from "lucide-react";
+import {
+  ShoppingCart,
+  ArrowRight,
+  Leaf,
+  Apple,
+  Beef,
+  Carrot,
+  Flower2,
+  Package,
+  LayoutGrid,
+  Plus,
+  Minus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useProducts, type Product } from "@/context/products";
+import { useProducts } from "@/context/use-products";
+import type { Product } from "@/context/products";
 import { useCart } from "@/context/cart";
 import { Link } from "@tanstack/react-router";
 
 type CategoryKey = "all" | "fruits" | "meat" | "vegetables";
 
 const categories: { key: CategoryKey; name: string; icon: typeof Leaf }[] = [
-  { key: "all",        name: "All Products",      icon: LayoutGrid },
-  { key: "fruits",     name: "Fresh Fruits",       icon: Apple },
-  { key: "vegetables", name: "Fresh Vegetables",   icon: Carrot },
-  { key: "meat",       name: "Halal Meat",         icon: Beef },
+  { key: "all", name: "All Products", icon: LayoutGrid },
+  { key: "fruits", name: "Fresh Fruits", icon: Apple },
+  { key: "vegetables", name: "Fresh Vegetables", icon: Carrot },
+  { key: "meat", name: "Halal Meat", icon: Beef },
 ];
 
 // ─── Product Card ──────────────────────────────────────────────────────────────
@@ -48,8 +61,7 @@ function ProductCard({ p }: { p: Product }) {
         </p>
         <p className="mt-1 text-sm text-gray-500">{p.tagline}</p>
         <p className="mt-0.5 text-sm text-gray-400">
-          Min. Order:{" "}
-          <span className="font-semibold text-gray-600">{p.min_order}</span>
+          Min. Order: <span className="font-semibold text-gray-600">{p.min_order}</span>
         </p>
 
         {/* Qty stepper + Add to Cart */}
@@ -96,6 +108,7 @@ function ProductSection({ title, sub, items }: { title: string; sub: string; ite
         </div>
         <Link
           to="/shop"
+          search={{ category: undefined, q: "" }}
           className="flex shrink-0 items-center gap-1 text-sm font-semibold text-[#1a6b3c] hover:underline"
         >
           View All <ArrowRight className="size-4" />
@@ -115,19 +128,18 @@ export function FeaturedProducts() {
   const { products } = useProducts();
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("all");
 
-  const fruits     = products.filter((p) => p.category === "fruits");
-  const meats      = products.filter((p) => p.category === "meat");
+  const fruits = products.filter((p) => p.category === "fruits");
+  const meats = products.filter((p) => p.category === "meat");
   const vegetables = products.filter((p) => p.category === "vegetables");
 
   // What to show based on active category
-  const showFruits     = activeCategory === "all" || activeCategory === "fruits";
-  const showMeats      = activeCategory === "all" || activeCategory === "meat";
+  const showFruits = activeCategory === "all" || activeCategory === "fruits";
+  const showMeats = activeCategory === "all" || activeCategory === "meat";
   const showVegetables = activeCategory === "all" || activeCategory === "vegetables";
 
   return (
     <section className="bg-white py-14 lg:py-20">
       <div className="shell flex gap-10">
-
         {/* ── Left sidebar ── */}
         <aside className="hidden w-52 shrink-0 lg:block">
           <h3 className="mb-4 text-base font-bold text-gray-800">Shop by Category</h3>
@@ -144,9 +156,11 @@ export function FeaturedProducts() {
               >
                 <Icon className="size-4 shrink-0" />
                 {name}
-                <span className={`ml-auto text-[11px] rounded-full px-1.5 py-0.5 font-semibold ${
-                  activeCategory === key ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"
-                }`}>
+                <span
+                  className={`ml-auto text-[11px] rounded-full px-1.5 py-0.5 font-semibold ${
+                    activeCategory === key ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"
+                  }`}
+                >
                   {key === "all"
                     ? products.length
                     : products.filter((p) => p.category === key).length}
@@ -200,11 +214,12 @@ export function FeaturedProducts() {
           {/* Empty state */}
           {!showFruits && !showMeats && !showVegetables && (
             <div className="flex flex-col items-center gap-4 py-20 text-center">
-              <p className="text-sm font-semibold text-gray-400">No products in this category yet.</p>
+              <p className="text-sm font-semibold text-gray-400">
+                No products in this category yet.
+              </p>
             </div>
           )}
         </div>
-
       </div>
     </section>
   );

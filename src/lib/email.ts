@@ -28,9 +28,9 @@
 import emailjs from "@emailjs/browser";
 import type { CartItem } from "@/context/cart";
 
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  as string;
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string;
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  as string;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 
 const ADMIN_EMAIL = "danielkabagambe@gmail.com";
 
@@ -52,29 +52,31 @@ function buildItemsText(items: CartItem[]): string {
   return items
     .map(
       (i) =>
-        `• ${i.product.name} - ${i.quantity} kg @ $${i.product.price.toFixed(2)}/kg = $${(i.product.price * i.quantity).toFixed(2)}`
+        `• ${i.product.name} - ${i.quantity} kg @ $${i.product.price.toFixed(2)}/kg = $${(i.product.price * i.quantity).toFixed(2)}`,
     )
     .join("\n");
 }
 
 async function sendEmail(toEmail: string, toName: string, data: OrderEmailData) {
   const params = {
-    to_email:        toEmail,
-    to_name:         toName,
-    order_id:        data.orderId.slice(0, 8).toUpperCase(),
-    order_date:      new Date().toLocaleDateString("en-GB", {
-      day: "numeric", month: "long", year: "numeric",
+    to_email: toEmail,
+    to_name: toName,
+    order_id: data.orderId.slice(0, 8).toUpperCase(),
+    order_date: new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     }),
-    items_html:      buildItemsText(data.items),
-    total_price:     `$${data.totalPrice.toFixed(2)}`,
-    total_qty:       `${data.totalQty} kg`,
-    customer_name:   data.customerName,
-    customer_email:  data.customerEmail,
-    customer_phone:  data.customerPhone,
+    items_html: buildItemsText(data.items),
+    total_price: `$${data.totalPrice.toFixed(2)}`,
+    total_qty: `${data.totalQty} kg`,
+    customer_name: data.customerName,
+    customer_email: data.customerEmail,
+    customer_phone: data.customerPhone,
     customer_company: data.customerCompany ?? "-",
-    country:         data.country,
-    city:            data.city ?? "-",
-    notes:           data.notes || "None",
+    country: data.country,
+    city: data.city ?? "-",
+    notes: data.notes || "None",
   };
 
   return emailjs.send(SERVICE_ID, TEMPLATE_ID, params, PUBLIC_KEY);
@@ -88,7 +90,7 @@ async function sendEmail(toEmail: string, toName: string, data: OrderEmailData) 
 export async function sendOrderEmails(data: OrderEmailData): Promise<void> {
   if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
     console.warn(
-      "EmailJS not configured. Add VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID and VITE_EMAILJS_PUBLIC_KEY to your .env file."
+      "EmailJS not configured. Add VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID and VITE_EMAILJS_PUBLIC_KEY to your .env file.",
     );
     return;
   }

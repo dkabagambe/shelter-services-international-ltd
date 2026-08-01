@@ -1,15 +1,45 @@
 import { motion } from "framer-motion";
 import { Leaf, Apple, Beef, Carrot, Package, LayoutGrid, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useProducts } from "@/context/products";
+import { useProducts } from "@/context/use-products";
 
 const categoryConfig = [
-  { name: "Fresh Fruits",      value: "fruits",     icon: Apple,      color: "bg-rose-50 text-rose-500 group-hover:bg-rose-500 group-hover:text-white" },
-  { name: "Fresh Vegetables",  value: "vegetables", icon: Carrot,     color: "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white" },
-  { name: "Halal Meat",        value: "meat",       icon: Beef,       color: "bg-orange-50 text-orange-500 group-hover:bg-orange-500 group-hover:text-white" },
-  { name: "Herbs & Spices",    value: "herbs",      icon: Leaf,       color: "bg-violet-50 text-violet-500 group-hover:bg-violet-500 group-hover:text-white" },
-  { name: "Bulk Produce",      value: "vegetables", icon: Package,    color: "bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white" },
-  { name: "All Products",      value: "all",        icon: LayoutGrid, color: "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground" },
+  {
+    name: "Fresh Fruits",
+    value: "fruits",
+    icon: Apple,
+    color: "bg-rose-50 text-rose-500 group-hover:bg-rose-500 group-hover:text-white",
+  },
+  {
+    name: "Fresh Vegetables",
+    value: "vegetables",
+    icon: Carrot,
+    color: "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white",
+  },
+  {
+    name: "Halal Meat",
+    value: "meat",
+    icon: Beef,
+    color: "bg-orange-50 text-orange-500 group-hover:bg-orange-500 group-hover:text-white",
+  },
+  {
+    name: "Herbs & Spices",
+    value: "herbs",
+    icon: Leaf,
+    color: "bg-violet-50 text-violet-500 group-hover:bg-violet-500 group-hover:text-white",
+  },
+  {
+    name: "Bulk Produce",
+    value: "vegetables",
+    icon: Package,
+    color: "bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white",
+  },
+  {
+    name: "All Products",
+    value: "all",
+    icon: LayoutGrid,
+    color: "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground",
+  },
 ];
 
 export function Categories() {
@@ -35,6 +65,7 @@ export function Categories() {
         </div>
         <Link
           to="/shop"
+          search={{ category: undefined, q: "" }}
           className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-primary/30 px-4 py-2 text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
         >
           View all <ArrowRight className="size-4" />
@@ -53,10 +84,13 @@ export function Categories() {
           >
             <Link
               to="/shop"
-              search={{ category: value } as any}
+              search={{ category: undefined, q: "" }}
+              search={{ category: value, q: "" }}
               className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6 text-center shadow-card transition-all hover:border-primary/20 hover:shadow-card-hover"
             >
-              <span className={`grid size-14 place-items-center rounded-2xl transition-all duration-200 ${color}`}>
+              <span
+                className={`grid size-14 place-items-center rounded-2xl transition-all duration-200 ${color}`}
+              >
                 <Icon className="size-6" />
               </span>
               <span className="text-sm font-bold leading-tight text-foreground transition-colors group-hover:text-primary">
