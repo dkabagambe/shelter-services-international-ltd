@@ -169,6 +169,22 @@
   width: 100%;
   max-width: 84rem;
   padding-inline: 1.25rem;
+
+  @media (min-width: 480px) {
+    padding-inline: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    padding-inline: 2.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding-inline: 3.5rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-inline: 4rem;
+  }
 }
 
 @utility eyebrow {
