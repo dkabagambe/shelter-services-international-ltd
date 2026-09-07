@@ -28,7 +28,7 @@ function LoginPage() {
       setError(error);
       return;
     }
-    navigate({ to: "/" });
+    navigate({ to: "/account" });
   }
 
   return (
@@ -74,9 +74,17 @@ function LoginPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="password">
-                Password
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-semibold text-gray-700" htmlFor="password">
+                  Password
+                </label>
+                <Link
+                  to="/forgot-password"
+                  className="text-xs font-semibold text-[#1a6b3c] hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
                 <input
                   id="password"

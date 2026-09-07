@@ -32,7 +32,7 @@ const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 
-const ADMIN_EMAIL = "danielkabagambe@gmail.com";
+const ADMIN_EMAIL = "info@shelterservicesinternational.com";
 
 export interface OrderEmailData {
   orderId: string;
@@ -85,7 +85,7 @@ async function sendEmail(toEmail: string, toName: string, data: OrderEmailData) 
 /**
  * Sends two emails:
  * 1. Receipt to the customer
- * 2. Order notification to the admin (danielkabagambe@gmail.com)
+ * 2. Order notification to the admin (info@shelterservicesinternational.com)
  */
 export async function sendOrderEmails(data: OrderEmailData): Promise<void> {
   if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {

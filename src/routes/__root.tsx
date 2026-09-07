@@ -92,7 +92,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Shelter Services International" },
       { property: "og:description", content: "Premium fresh Kenyan produce exported worldwide." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://shelterservicesinternational.com" },
+      { property: "og:site_name", content: "Shelter Services International" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@shelterservicesintl" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

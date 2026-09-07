@@ -27,11 +27,11 @@ export function AnnouncementBar() {
             +254 703 372 539
           </a>
           <a
-            href="mailto:info@shelterservices.co.ke"
+            href="mailto:info@shelterservicesinternational.com"
             className="hidden items-center gap-1.5 pl-3 text-white/90 transition-colors hover:text-white lg:flex"
           >
             <Mail className="size-3 shrink-0" />
-            info@shelterservices.co.ke
+            info@shelterservicesinternational.com
           </a>
         </div>
 

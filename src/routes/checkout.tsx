@@ -23,6 +23,8 @@ function CheckoutPage() {
   const [submitted, setSubmitted] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [orderSnapshot, setOrderSnapshot] = useState<typeof items>([]);
+  const [orderTotalSnapshot, setOrderTotalSnapshot] = useState(0);
   const [form, setForm] = useState({
     name: profile?.full_name ?? "",
     company: "",
@@ -80,6 +82,8 @@ function CheckoutPage() {
 
     setSubmitting(false);
     setOrderId(oid);
+    setOrderSnapshot([...items]);
+    setOrderTotalSnapshot(totalPrice);
     clearCart();
     setSubmitted(true);
   }
@@ -113,8 +117,8 @@ function CheckoutPage() {
           <div className="mt-8 w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm">
             <h2 className="mb-4 text-base font-bold text-gray-900">Order Summary</h2>
             <ul className="space-y-3">
-              {items.length > 0 ? (
-                items.map(({ product, quantity }) => (
+              {orderSnapshot.length > 0 ? (
+                orderSnapshot.map(({ product, quantity }) => (
                   <li key={product.id} className="flex items-center gap-3 text-sm">
                     <img
                       src={product.image}
@@ -129,13 +133,13 @@ function CheckoutPage() {
                   </li>
                 ))
               ) : (
-                <li className="text-sm text-gray-400">Items cleared after checkout.</li>
+                <li className="text-sm text-gray-400">Order confirmed.</li>
               )}
             </ul>
             <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
               <span className="text-sm font-bold text-gray-900">Total</span>
               <span className="text-lg font-extrabold text-[#1a6b3c]">
-                ${totalPrice.toFixed(2)}
+                ${orderTotalSnapshot.toFixed(2)}
               </span>
             </div>
           </div>
@@ -326,7 +330,7 @@ function CheckoutPage() {
                 <Mail className="mt-0.5 size-4 shrink-0" />
                 <span>
                   A receipt will be sent to <strong>{form.email || "your email"}</strong> and our
-                  team at <strong>danielkabagambe@gmail.com</strong> immediately after you submit.
+                  team at <strong>info@shelterservicesinternational.com</strong> immediately after you submit.
                 </span>
               </div>
 

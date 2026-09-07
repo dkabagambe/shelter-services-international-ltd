@@ -23,7 +23,10 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://shelterservicesinternational.com" },
+      { property: "og:site_name", content: "Shelter Services International" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@shelterservicesintl" },
     ],
   }),
   component: Index,
@@ -43,7 +46,9 @@ function Index() {
         <div id="about">
           <WhyChooseUs />
         </div>
-        <div id="farms">
+        {/* Both #farms and #exports anchor to the same section */}
+        <span id="farms" className="sr-only" />
+        <div id="exports">
           <ExportDestinations />
         </div>
         <div id="certifications">
@@ -53,7 +58,6 @@ function Index() {
         <div id="contact">
           <Newsletter />
         </div>
-        <div id="exports" />
       </main>
       <SiteFooter />
     </div>

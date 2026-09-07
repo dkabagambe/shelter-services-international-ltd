@@ -36,10 +36,10 @@ const columns = [
 ];
 
 const socials = [
-  { Icon: Facebook, label: "Facebook", href: "#" },
-  { Icon: Instagram, label: "Instagram", href: "#" },
-  { Icon: Linkedin, label: "LinkedIn", href: "#" },
-  { Icon: Twitter, label: "Twitter", href: "#" },
+  { Icon: Facebook, label: "Facebook", href: "https://facebook.com/shelterservicesintl" },
+  { Icon: Instagram, label: "Instagram", href: "https://instagram.com/shelterservicesintl" },
+  { Icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/shelter-services-international" },
+  { Icon: Twitter, label: "Twitter / X", href: "https://twitter.com/shelterservicesintl" },
 ];
 
 function FooterLink({ label }: { label: string }) {
@@ -143,10 +143,10 @@ export function SiteFooter() {
             <li className="flex items-center gap-3 text-sm">
               <Mail className="size-4 shrink-0 text-[#1a6b3c]" />
               <a
-                href="mailto:info@shelterservices.co.ke"
+                href="mailto:info@shelterservicesinternational.com"
                 className="text-gray-300 transition-colors hover:text-white"
               >
-                info@shelterservices.co.ke
+                info@shelterservicesinternational.com
               </a>
             </li>
           </ul>

@@ -470,6 +470,36 @@ function AdminPage() {
             {/* ── Products Tab ── */}
             {tab === "products" && (
               <div>
+                {/* Stats row */}
+                <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                  {[
+                    { label: "Total Products", value: products.length, color: "text-[#1a6b3c]" },
+                    {
+                      label: "In Stock",
+                      value: products.filter((p) => p.in_stock).length,
+                      color: "text-green-600",
+                    },
+                    {
+                      label: "Out of Stock",
+                      value: products.filter((p) => !p.in_stock).length,
+                      color: "text-red-500",
+                    },
+                    {
+                      label: "Categories",
+                      value: new Set(products.map((p) => p.category)).size,
+                      color: "text-blue-600",
+                    },
+                  ].map(({ label, value, color }) => (
+                    <div
+                      key={label}
+                      className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm text-center"
+                    >
+                      <p className={`text-2xl font-extrabold ${color}`}>{value}</p>
+                      <p className="text-xs text-gray-500 mt-1">{label}</p>
+                    </div>
+                  ))}
+                </div>
+
                 <div className="mb-6 flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-extrabold text-gray-900">Products</h2>
@@ -558,6 +588,43 @@ function AdminPage() {
             {/* ── Orders Tab ── */}
             {tab === "orders" && (
               <div>
+                {/* Stats row */}
+                <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-5">
+                  {(
+                    [
+                      { label: "Total", value: orders.length, color: "text-gray-900" },
+                      {
+                        label: "Pending",
+                        value: orders.filter((o) => o.status === "pending").length,
+                        color: "text-yellow-600",
+                      },
+                      {
+                        label: "Confirmed",
+                        value: orders.filter((o) => o.status === "confirmed").length,
+                        color: "text-blue-600",
+                      },
+                      {
+                        label: "Shipped",
+                        value: orders.filter((o) => o.status === "shipped").length,
+                        color: "text-purple-600",
+                      },
+                      {
+                        label: "Delivered",
+                        value: orders.filter((o) => o.status === "delivered").length,
+                        color: "text-[#1a6b3c]",
+                      },
+                    ] as { label: string; value: number; color: string }[]
+                  ).map(({ label, value, color }) => (
+                    <div
+                      key={label}
+                      className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm text-center"
+                    >
+                      <p className={`text-2xl font-extrabold ${color}`}>{value}</p>
+                      <p className="text-xs text-gray-500 mt-1">{label}</p>
+                    </div>
+                  ))}
+                </div>
+
                 <div className="mb-6">
                   <h2 className="text-2xl font-extrabold text-gray-900">Orders</h2>
                   <p className="text-sm text-gray-500">{orders.length} total orders</p>

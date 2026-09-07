@@ -275,7 +275,6 @@ export function SiteHeader() {
                   <Link
                     key={value}
                     to="/shop"
-                    search={{ category: undefined, q: "" }}
                     search={{ category: value, q: "" }}
                     onClick={() => setCatOpen(false)}
                     className="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-green-50 hover:text-[#1a6b3c]"
@@ -403,7 +402,6 @@ export function SiteHeader() {
                   <Link
                     key={value}
                     to="/shop"
-                    search={{ category: undefined, q: "" }}
                     search={{ category: value, q: "" }}
                     onClick={() => setMobileOpen(false)}
                     className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-600 hover:border-[#1a6b3c] hover:text-[#1a6b3c]"
