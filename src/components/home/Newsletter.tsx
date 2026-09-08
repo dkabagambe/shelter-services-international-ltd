@@ -2,14 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, ArrowRight, CheckCircle, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import emailjs from "@emailjs/browser";
-
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
-const TEMPLATE_ID = (import.meta.env.VITE_EMAILJS_NEWSLETTER_TEMPLATE_ID ??
-  import.meta.env.VITE_EMAILJS_TEMPLATE_ID) as string;
-
-const ADMIN_EMAIL = "info@shelterservicesinternational.com";
+import { sendContactEmail } from "@/lib/email";
 
 export function Newsletter() {
   // Newsletter state
@@ -34,35 +27,13 @@ export function Newsletter() {
     e.preventDefault();
     setNewsLoading(true);
 
-    if (SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY) {
-      try {
-        await emailjs.send(
-          SERVICE_ID,
-          TEMPLATE_ID,
-          {
-            to_email: ADMIN_EMAIL,
-            to_name: "Admin",
-            subscriber_email: newsEmail,
-            subscriber_company: newsCompany || "-",
-            order_id: "Newsletter Subscription",
-            order_date: new Date().toLocaleDateString("en-GB"),
-            items_html: `New newsletter subscriber: ${newsEmail} (${newsCompany || "no company"})`,
-            total_price: "N/A",
-            total_qty: "N/A",
-            customer_name: newsEmail,
-            customer_email: newsEmail,
-            customer_phone: "N/A",
-            customer_company: newsCompany || "-",
-            country: "N/A",
-            city: "N/A",
-            notes: "Newsletter subscription",
-          },
-          PUBLIC_KEY,
-        );
-      } catch {
-        // Still show success to user
-      }
-    }
+    await sendContactEmail({
+      kind: "newsletter",
+      name: newsEmail,
+      email: newsEmail,
+      company: newsCompany,
+      message: "Newsletter subscription",
+    });
 
     setNewsLoading(false);
     setNewsDone(true);
@@ -75,34 +46,13 @@ export function Newsletter() {
     setContactError("");
     setContactLoading(true);
 
-    if (SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY) {
-      try {
-        await emailjs.send(
-          SERVICE_ID,
-          TEMPLATE_ID,
-          {
-            to_email: ADMIN_EMAIL,
-            to_name: "Admin",
-            order_id: "Contact Form Inquiry",
-            order_date: new Date().toLocaleDateString("en-GB"),
-            items_html: contact.message,
-            total_price: "N/A",
-            total_qty: "N/A",
-            customer_name: contact.name,
-            customer_email: contact.email,
-            customer_phone: contact.phone || "N/A",
-            customer_company: contact.company || "-",
-            country: "N/A",
-            city: "N/A",
-            notes: contact.message,
-          },
-          PUBLIC_KEY,
-        );
-      } catch {
-        setContactError("Failed to send. Please email us directly at info@shelterservicesinternational.com");
-        setContactLoading(false);
-        return;
-      }
+    const sent = await sendContactEmail({ ...contact, kind: "contact" });
+    if (!sent) {
+      setContactError(
+        "Failed to send. Please email us directly at info@shelterservicesinternational.com",
+      );
+      setContactLoading(false);
+      return;
     }
 
     setContactLoading(false);
@@ -110,9 +60,7 @@ export function Newsletter() {
     setContact({ name: "", email: "", phone: "", company: "", message: "" });
   }
 
-  function handleContactChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) {
+  function handleContactChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setContact((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
@@ -131,12 +79,10 @@ export function Newsletter() {
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#1a6b3c]">
             Get in Touch
           </p>
-          <h2 className="mt-3 text-2xl font-extrabold text-gray-900 sm:text-3xl">
-            Contact Us
-          </h2>
+          <h2 className="mt-3 text-2xl font-extrabold text-gray-900 sm:text-3xl">Contact Us</h2>
           <p className="mt-3 text-sm leading-relaxed text-gray-500">
-            Ready to import premium Kenyan produce? Our team responds within 24 hours with
-            pricing, availability, and export documentation details.
+            Ready to import premium Kenyan produce? Our team responds within 24 hours with pricing,
+            availability, and export documentation details.
           </p>
 
           <ul className="mt-8 space-y-5">
@@ -147,7 +93,8 @@ export function Newsletter() {
               <div>
                 <p className="text-sm font-bold text-gray-900">Address</p>
                 <p className="text-sm text-gray-500">
-                  Enterprise Road, Industrial Area<br />
+                  Enterprise Road, Industrial Area
+                  <br />
                   Nairobi, Kenya
                 </p>
               </div>
@@ -158,10 +105,7 @@ export function Newsletter() {
               </span>
               <div>
                 <p className="text-sm font-bold text-gray-900">Phone / WhatsApp</p>
-                <a
-                  href="tel:+254703372539"
-                  className="text-sm text-[#1a6b3c] hover:underline"
-                >
+                <a href="tel:+254703372539" className="text-sm text-[#1a6b3c] hover:underline">
                   +254 703 372 539
                 </a>
               </div>
@@ -205,14 +149,41 @@ export function Newsletter() {
               <div className="grid gap-4 sm:grid-cols-2">
                 {(
                   [
-                    { id: "name", label: "Full Name", type: "text", required: true, placeholder: "John Doe" },
-                    { id: "company", label: "Company", type: "text", required: false, placeholder: "Your Business Ltd." },
-                    { id: "email", label: "Email", type: "email", required: true, placeholder: "you@company.com" },
-                    { id: "phone", label: "Phone / WhatsApp", type: "tel", required: false, placeholder: "+971 50 000 0000" },
+                    {
+                      id: "name",
+                      label: "Full Name",
+                      type: "text",
+                      required: true,
+                      placeholder: "John Doe",
+                    },
+                    {
+                      id: "company",
+                      label: "Company",
+                      type: "text",
+                      required: false,
+                      placeholder: "Your Business Ltd.",
+                    },
+                    {
+                      id: "email",
+                      label: "Email",
+                      type: "email",
+                      required: true,
+                      placeholder: "you@company.com",
+                    },
+                    {
+                      id: "phone",
+                      label: "Phone / WhatsApp",
+                      type: "tel",
+                      required: false,
+                      placeholder: "+971 50 000 0000",
+                    },
                   ] as const
                 ).map(({ id, label, type, required, placeholder }) => (
                   <div key={id} className="flex flex-col gap-1.5">
-                    <label className="text-sm font-semibold text-gray-700" htmlFor={`contact-${id}`}>
+                    <label
+                      className="text-sm font-semibold text-gray-700"
+                      htmlFor={`contact-${id}`}
+                    >
                       {label} {required && <span className="text-red-500">*</span>}
                     </label>
                     <input
@@ -245,9 +216,7 @@ export function Newsletter() {
                 />
               </div>
 
-              {contactError && (
-                <p className="text-sm text-red-500">{contactError}</p>
-              )}
+              {contactError && <p className="text-sm text-red-500">{contactError}</p>}
 
               <Button
                 type="submit"

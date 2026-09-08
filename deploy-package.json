@@ -1,0 +1,12 @@
+{
+  "name": "kenya-export-emporium",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.mjs",
+  "scripts": {
+    "start": "node app.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

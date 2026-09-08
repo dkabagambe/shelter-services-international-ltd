@@ -44,18 +44,86 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+/**
+ * Append security headers to every response.
+ * - HSTS: force HTTPS for 1 year, include subdomains, submit to preload list
+ * - X-Content-Type-Options: prevent MIME-type sniffing
+ * - X-Frame-Options: block clickjacking via iframe embedding
+ * - Referrer-Policy: don't leak full URL to third-party origins
+ * - Permissions-Policy: disable sensors/camera/mic we don't use
+ * - Content-Security-Policy: whitelist known origins; nonces/hashes not needed
+ *   for this SSR app because inline scripts are injected by TanStack Start
+ *   with `unsafe-inline` (required until nonce support lands upstream).
+ */
+function addSecurityHeaders(response: Response): Response {
+  const headers = new Headers(response.headers);
+
+  // HTTPS enforcement (1 year, subdomains, preload)
+  headers.set(
+    "strict-transport-security",
+    "max-age=31536000; includeSubDomains; preload",
+  );
+
+  // Prevent MIME sniffing
+  headers.set("x-content-type-options", "nosniff");
+
+  // Block embedding in iframes (clickjacking)
+  headers.set("x-frame-options", "SAMEORIGIN");
+
+  // Don't send full referrer to cross-origin requests
+  headers.set("referrer-policy", "strict-origin-when-cross-origin");
+
+  // Disable browser features this site doesn't need
+  headers.set(
+    "permissions-policy",
+    "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+  );
+
+  // Content-Security-Policy
+  // - default-src 'self': only load resources from our own origin by default
+  // - script-src 'self' 'unsafe-inline': TanStack Start injects inline scripts during SSR hydration
+  // - style-src 'self' 'unsafe-inline' fonts.googleapis.com: inline Tailwind styles + Google Fonts CSS
+  // - font-src 'self' fonts.gstatic.com: Google Fonts font files
+  // - img-src 'self' data: blob: *.supabase.co: product images stored in Supabase Storage
+  // - connect-src 'self' *.supabase.co api.emailjs.com: Supabase API + EmailJS
+  // - frame-ancestors 'none': belt-and-suspenders alongside X-Frame-Options
+  headers.set(
+    "content-security-policy",
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: blob: https://*.supabase.co",
+      "connect-src 'self' https://*.supabase.co https://api.emailjs.com",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join("; "),
+  );
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      return addSecurityHeaders(normalized);
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
+      return addSecurityHeaders(
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      );
     }
   },
 };

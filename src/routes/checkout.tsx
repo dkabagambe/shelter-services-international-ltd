@@ -23,6 +23,7 @@ function CheckoutPage() {
   const [submitted, setSubmitted] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [orderSnapshot, setOrderSnapshot] = useState<typeof items>([]);
   const [orderTotalSnapshot, setOrderTotalSnapshot] = useState(0);
   const [form, setForm] = useState({
@@ -66,7 +67,7 @@ function CheckoutPage() {
     }
 
     // 2. Send email receipts - customer + admin
-    await sendOrderEmails({
+    const receiptSent = await sendOrderEmails({
       orderId: oid,
       customerName: form.name,
       customerEmail: form.email,
@@ -82,6 +83,7 @@ function CheckoutPage() {
 
     setSubmitting(false);
     setOrderId(oid);
+    setEmailSent(receiptSent);
     setOrderSnapshot([...items]);
     setOrderTotalSnapshot(totalPrice);
     clearCart();
@@ -108,7 +110,16 @@ function CheckoutPage() {
           <div className="mt-6 flex items-center gap-3 rounded-xl border border-[#1a6b3c]/20 bg-[#1a6b3c]/5 px-6 py-4">
             <Mail className="size-5 shrink-0 text-[#1a6b3c]" />
             <p className="text-sm text-gray-600 text-left">
-              A receipt has been sent to <strong>{form.email}</strong>.<br />
+              {emailSent ? (
+                <>
+                  A receipt has been sent to <strong>{form.email}</strong>.<br />
+                </>
+              ) : (
+                <>
+                  Your order was saved, but the receipt email could not be sent automatically.
+                  <br />
+                </>
+              )}
               Our team will follow up within <strong>24 hours</strong> with a formal quote.
             </p>
           </div>
@@ -330,7 +341,8 @@ function CheckoutPage() {
                 <Mail className="mt-0.5 size-4 shrink-0" />
                 <span>
                   A receipt will be sent to <strong>{form.email || "your email"}</strong> and our
-                  team at <strong>info@shelterservicesinternational.com</strong> immediately after you submit.
+                  team at <strong>info@shelterservicesinternational.com</strong> immediately after
+                  you submit.
                 </span>
               </div>
 
